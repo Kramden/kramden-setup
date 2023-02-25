@@ -1,5 +1,5 @@
-name: numbers
-description: YaruNavigationPage example
+name: kramden_setup
+description: Kramden Setup Tool
 publish_to: 'none'
 
 environment:
