@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:yaru/yaru.dart';
 import 'package:yaru_widgets/yaru_widgets.dart';
 
@@ -17,7 +16,6 @@ class ThemeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
     return Row(
       children: [
         Expanded(
@@ -29,14 +27,14 @@ class ThemeSelector extends StatelessWidget {
               fit: StackFit.passthrough,
               children: [
                 ThemeCard(
-                  title: Text(l10n.systemTheme),
+                  title: const Text("System Theme"),
                   theme: YaruTheme.of(context).theme ?? yaruLight,
                   previewBuilder: previewBuilder,
                 ),
                 YaruClip.diagonal(
                   position: YaruDiagonalClip.bottomLeft,
                   child: ThemeCard(
-                    title: Text(l10n.systemTheme),
+                    title: const Text("System Theme"),
                     theme: YaruTheme.of(context).darkTheme ?? yaruDark,
                     previewBuilder: previewBuilder,
                   ),
@@ -53,7 +51,7 @@ class ThemeSelector extends StatelessWidget {
             onTap: () => onChanged(ThemeMode.light),
             child: ThemeCard(
               theme: YaruTheme.of(context).theme ?? yaruLight,
-              title: Text(l10n.lightTheme),
+              title: const Text("Light Theme"),
               previewBuilder: previewBuilder,
             ),
           ),
@@ -66,7 +64,7 @@ class ThemeSelector extends StatelessWidget {
             onTap: () => onChanged(ThemeMode.dark),
             child: ThemeCard(
               theme: YaruTheme.of(context).darkTheme ?? yaruDark,
-              title: Text(l10n.darkTheme),
+              title: const Text("Dark Theme"),
               previewBuilder: previewBuilder,
             ),
           ),

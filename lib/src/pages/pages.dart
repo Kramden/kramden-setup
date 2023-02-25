@@ -1,8 +1,6 @@
 import 'package:flutter/widgets.dart';
-
-import 'math/math_page.dart';
-import 'trivia/trivia_page.dart';
-import 'year/year_page.dart';
+import 'landscape/landscape_page.dart';
+import 'sysinfo/sysinfo_page.dart';
 
 class PageBuilder {
   const PageBuilder({
@@ -18,18 +16,13 @@ class PageBuilder {
 
 const pages = [
   PageBuilder(
-    iconBuilder: MathPage.buildIcon,
-    titleBuilder: MathPage.buildTitle,
-    pageBuilder: MathPage.buildDetail,
+    iconBuilder: SysinfoPage.buildIcon,
+    titleBuilder: SysinfoPage.buildTitle,
+    pageBuilder: SysinfoPage.buildDetail,
   ),
   PageBuilder(
-    iconBuilder: TriviaPage.buildIcon,
-    titleBuilder: TriviaPage.buildTitle,
-    pageBuilder: TriviaPage.buildDetail,
-  ),
-  PageBuilder(
-    iconBuilder: YearPage.buildIcon,
-    titleBuilder: YearPage.buildTitle,
-    pageBuilder: YearPage.buildDetail,
+    iconBuilder: LandscapePage.buildIcon,
+    titleBuilder: LandscapePage.buildTitle,
+    pageBuilder: LandscapePage.buildDetail,
   ),
 ];

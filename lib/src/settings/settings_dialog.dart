@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:yaru/yaru.dart';
 import 'package:yaru_widgets/yaru_widgets.dart';
@@ -26,13 +25,12 @@ class SettingsDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
     return Dialog(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          YaruDialogTitleBar(
-            title: Text(l10n.settingsDialogTitle),
+          const YaruDialogTitleBar(
+            title: Text("Settings"),
           ),
           Padding(
             padding: const EdgeInsets.all(kYaruPagePadding),
