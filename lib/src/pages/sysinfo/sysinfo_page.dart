@@ -114,8 +114,8 @@ class _SysinfoPageState extends State<SysinfoPage> {
                   style: YaruTileStyle.normal,
                 ),
                 YaruTile(
-                  title: const Text("Battery Capacity"),
-                  subtitle: Text("${batteryCapacity.toString()} %"),
+                  title: const Text("Battery"),
+                  subtitle: Text("Capacity: ${batteryCapacity.toString()} %"),
                   style: YaruTileStyle.normal,
                 ),
               ]),
