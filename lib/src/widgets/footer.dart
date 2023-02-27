@@ -8,7 +8,9 @@ class Footer extends StatelessWidget {
     return const ButtonBar(
       alignment: MainAxisAlignment.center,
       children: [
-        Text("Kramden"),
+        Image(
+            image:
+                ExactAssetImage("assets/images/getlearngive.png", scale: 1.0)),
       ],
     );
   }
