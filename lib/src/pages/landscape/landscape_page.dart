@@ -77,7 +77,6 @@ class _LandscapePageState extends State<LandscapePage> {
   Widget build(BuildContext context) {
     //final model = context.watch<LandscapeModel>();
     return Scaffold(
-      // ignore: prefer_const_constructors
       body: Padding(
           padding: const EdgeInsets.all(kYaruPagePadding),
           child: Center(
