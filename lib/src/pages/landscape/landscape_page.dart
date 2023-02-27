@@ -86,34 +86,43 @@ class _LandscapePageState extends State<LandscapePage> {
               children: [
                 const Text('Please enter K# system identifier:'),
                 SizedBox(
-                  width: 200,
-                  child: Stack(children: [
-                    TextField(
-                      controller: _controller,
-                      onSubmitted: (String value) async {
-                        await register(value).then((value) {
-                          showDialog<void>(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text('${value ? "Success" : "Failed"}!'),
-                                content: Text(
-                                    'Registration for ${_controller.text} was ${value ? "successful" : "unsuccessful"}'),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Text('OK'),
-                                  ),
-                                ],
+                  width: 300,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _controller,
+                          onSubmitted: (String value) async {
+                            await register(value).then((value) {
+                              showDialog<void>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text(
+                                        '${value ? "Success" : "Failed"}!'),
+                                    content: Text(
+                                        'Registration for ${_controller.text} was ${value ? "successful" : "unsuccessful"}'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                },
                               );
-                            },
-                          );
-                        });
-                      },
-                    ),
-                  ]),
+                            });
+                          },
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: const Text('Register'),
+                      ),
+                    ],
+                  ),
                 ),
               ], //children
             ),
@@ -123,13 +132,6 @@ class _LandscapePageState extends State<LandscapePage> {
             image: AssetImage(YaruTheme.of(context).themeMode == ThemeMode.dark
                 ? 'assets/images/landscape_light.png'
                 : 'assets/images/landscape_dark.png')),
-      ),
-
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: FloatingActionButton(
-        //onPressed: () => context.read<LandscapeModel>().load(randomInt()),
-        onPressed: () {},
-        child: const Icon(YaruIcons.ok_filled),
       ),
       bottomNavigationBar: const Footer(),
     );
