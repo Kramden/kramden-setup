@@ -21,6 +21,8 @@ dependencies:
   yaru_icons: ^1.0.2
   yaru_widgets: ^2.0.0
   upower: ^0.7.0
+  process_run: ^0.12.5+2
+  ini: ^2.1.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -32,4 +34,8 @@ flutter:
   generate: true
   uses-material-design: true
   assets:
-    - assets/
+    - assets/images/landscape_dark.png
+    - assets/images/landscape_light.png
+    - assets/images/getlearngive.png
+    - assets/images/kramden-logo.png
+
