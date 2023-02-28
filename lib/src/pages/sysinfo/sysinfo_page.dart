@@ -42,7 +42,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
 
   void getMemoryInfo() async {
     final ProcessCmd cmd = ProcessCmd('free', ['-h', '--si']);
-    final result = await runCmd(cmd, verbose: false, commandVerbose: true);
+    final result = await runCmd(cmd, verbose: false, commandVerbose: false);
     final output = result.stdout.toString();
     final memory = output.split('        ');
     memoryTotal = memory[4].trim();
@@ -51,7 +51,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
 
   void getHardDriveInfo() async {
     final ProcessCmd cmd = ProcessCmd('df', ['-h', '/']);
-    final result = await runCmd(cmd, verbose: false, commandVerbose: true);
+    final result = await runCmd(cmd, verbose: false, commandVerbose: false);
     final output = result.stdout.toString();
     final hardDrive = output.split('  ');
     hardDriveCapacity = hardDrive[5];
