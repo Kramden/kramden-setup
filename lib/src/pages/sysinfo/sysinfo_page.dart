@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:dbus/dbus.dart';
 import 'package:process_run/cmd_run.dart';
 import 'package:provider/provider.dart';
 import 'package:upower/upower.dart';
@@ -39,6 +40,47 @@ class _SysinfoPageState extends State<SysinfoPage> {
   late String hardDriveUsage = "";
   late String memoryTotal = "";
   late String swapTotal = "";
+  late String vendor = "";
+  late String hostname = "";
+  late String hardwareModel = "";
+  late String OSName = "";
+
+  void getSystemInfo() async {
+    final client = DBusClient.system();
+    final object = DBusRemoteObject(client,
+        path: DBusObjectPath('/org/freedesktop/hostname1'),
+        name: 'org.freedesktop.hostname1');
+    final properties =
+        await object.getAllProperties('org.freedesktop.hostname1');
+    properties.forEach((name, value) {
+      if (name == 'Hostname') {
+        hostname = value.toNative();
+      } else if (name == 'HardwareVendor') {
+        vendor = value.toNative();
+      } else if (name == 'HardwareModel') {
+        hardwareModel = value.toNative();
+      } else if (name == 'OperatingSystemPrettyName') {
+        OSName = value.toNative();
+      }
+      print('$name: ${value.toNative()}');
+    });
+    print("==================================");
+    print(hostname);
+    print(vendor);
+    print(hardwareModel);
+    print(OSName);
+
+    /*
+    final ProcessCmd cmd = ProcessCmd('grep', ['model name', '/proc/cpuinfo']);
+    final result = await runCmd(cmd, verbose: false, commandVerbose: false);
+    final output = result.stdout;
+    final system = output.split(': ');
+    print(system[0]);
+    print("HERE");
+    print(output);
+    //print(systemRam);
+    */
+  }
 
   void getMemoryInfo() async {
     final ProcessCmd cmd = ProcessCmd('free', ['-h', '--si']);
@@ -79,6 +121,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
     getBatteryInfo();
     getHardDriveInfo();
     getMemoryInfo();
+    getSystemInfo();
   }
 
   @override
@@ -92,8 +135,23 @@ class _SysinfoPageState extends State<SysinfoPage> {
             YaruSection(
               child: Column(children: [
                 YaruTile(
+                  title: const Text("System"),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Kramden Identifier: $hostname"),
+                      Text("Manufacturer: $vendor"),
+                      Text("Model: $hardwareModel"),
+                      Text("CPU: $hardDriveAvailable"),
+                      Text("OS: $OSName"),
+                    ],
+                  ),
+                  style: YaruTileStyle.normal,
+                ),
+                YaruTile(
                   title: const Text("Hard Drive"),
                   subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Capacity: $hardDriveCapacity"),
                       Text("Used: $hardDriveUsed"),
@@ -106,6 +164,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
                 YaruTile(
                   title: const Text("System Memory"),
                   subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Total RAM: $memoryTotal"),
                       Text("Total swap: $swapTotal"),

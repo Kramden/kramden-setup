@@ -23,6 +23,7 @@ dependencies:
   upower: ^0.7.0
   process_run: ^0.12.5+2
   ini: ^2.1.0
+  dbus: ^0.7.8
 
 dev_dependencies:
   flutter_lints: ^2.0.0
