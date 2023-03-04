@@ -118,7 +118,29 @@ class _KramdenPageState extends State<KramdenPage> {
                             ),
                           ),
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              await register(_controller.text).then((value) {
+                                showDialog<void>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text(
+                                          '${value ? "Success" : "Failed"}!'),
+                                      content: Text(
+                                          'Registration for ${_controller.text} was ${value ? "successful" : "unsuccessful"}'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              });
+                            },
                             child: const Text('Register'),
                           ),
                         ],
