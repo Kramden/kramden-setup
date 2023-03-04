@@ -75,6 +75,14 @@ class LandscapePage extends StatefulWidget {
 class _LandscapePageState extends State<LandscapePage> {
   late TextEditingController _controller;
 
+  String _kramdenIdentifier() {
+    final config = io.File('/etc/hostname').readAsLinesSync();
+    final hostname = config.first.toString();
+    return hostname;
+  }
+
+  String get kramndenIdentifier => _kramdenIdentifier();
+
   @override
   void initState() {
     super.initState();
@@ -87,52 +95,42 @@ class _LandscapePageState extends State<LandscapePage> {
     return Scaffold(
       body: Padding(
           padding: const EdgeInsets.all(kYaruPagePadding),
-          child: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text('Please enter K# system identifier:'),
-                SizedBox(
-                  width: 300,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _controller,
-                          onSubmitted: (String value) async {
-                            await register(value).then((value) {
-                              showDialog<void>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text(
-                                        '${value ? "Success" : "Failed"}!'),
-                                    content: Text(
-                                        'Registration for ${_controller.text} was ${value ? "successful" : "unsuccessful"}'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text('OK'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            });
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text('Register $kramndenIdentifier with Landscape'),
+                  const Padding(padding: EdgeInsets.all(10)),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await register(kramndenIdentifier).then((value) {
+                        showDialog<void>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('${value ? "Success" : "Failed"}!'),
+                              content: Text(
+                                  'Registration for $kramndenIdentifier was ${value ? "successful" : "unsuccessful"}'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            );
                           },
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: const Text('Register'),
-                      ),
-                    ],
+                        );
+                      });
+                    },
+                    child: const Text('Register'),
                   ),
-                ),
-              ], //children
-            ),
+                ],
+              ),
+            ], //children
           )),
       appBar: AppBar(
         title: Image(
@@ -140,7 +138,6 @@ class _LandscapePageState extends State<LandscapePage> {
                 ? 'assets/images/landscape_light.png'
                 : 'assets/images/landscape_dark.png')),
       ),
-      bottomNavigationBar: const Footer(),
     );
   }
 }
