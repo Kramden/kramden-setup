@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
+import 'identify/identify_page.dart';
 import 'landscape/landscape_page.dart';
-import 'kramden/kramden_page.dart';
 import 'sysinfo/sysinfo_page.dart';
 
 class PageBuilder {
@@ -17,9 +17,9 @@ class PageBuilder {
 
 const pages = [
   PageBuilder(
-    iconBuilder: KramdenPage.buildIcon,
-    titleBuilder: KramdenPage.buildTitle,
-    pageBuilder: KramdenPage.buildDetail,
+    iconBuilder: IdentifyPage.buildIcon,
+    titleBuilder: IdentifyPage.buildTitle,
+    pageBuilder: IdentifyPage.buildDetail,
   ),
   PageBuilder(
     iconBuilder: SysinfoPage.buildIcon,
