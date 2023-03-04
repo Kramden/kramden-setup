@@ -192,7 +192,6 @@ class _SysinfoPageState extends State<SysinfoPage> {
         onPressed: () => getBatteryInfo(),
         child: const Icon(YaruIcons.refresh),
       ),
-      bottomNavigationBar: const Footer(),
     );
   }
 }
