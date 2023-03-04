@@ -117,6 +117,7 @@ class _KramdenPageState extends State<KramdenPage> {
                               },
                             ),
                           ),
+                          const Padding(padding: EdgeInsets.all(10)),
                           ElevatedButton(
                             onPressed: () async {
                               await register(_controller.text).then((value) {
