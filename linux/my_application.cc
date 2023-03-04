@@ -25,7 +25,7 @@ static void my_application_activate(GApplication* application) {
   geometry.min_width = 680;
   geometry.min_height = 680;
   gtk_window_set_geometry_hints(window, nullptr, &geometry, GDK_HINT_MIN_SIZE);
-  gtk_window_set_default_size(window, 960, 680);
+  gtk_window_set_default_size(window, 960, 720);
 
   g_autoptr(FlDartProject) project = fl_dart_project_new();
   fl_dart_project_set_dart_entrypoint_arguments(
