@@ -73,8 +73,6 @@ class LandscapePage extends StatefulWidget {
 }
 
 class _LandscapePageState extends State<LandscapePage> {
-  late TextEditingController _controller;
-
   String _kramdenIdentifier() {
     final config = io.File('/etc/hostname').readAsLinesSync();
     final hostname = config.first.toString();
@@ -86,7 +84,6 @@ class _LandscapePageState extends State<LandscapePage> {
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController();
   }
 
   @override
