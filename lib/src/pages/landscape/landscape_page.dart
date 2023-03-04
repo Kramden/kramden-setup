@@ -1,4 +1,5 @@
 import 'dart:io' as io;
+import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
 import 'package:ini/ini.dart';
@@ -22,8 +23,15 @@ bool isRegistered() {
 }
 
 Future<bool> register(String identifier) async {
-  const pingUrl = 'http://landscape.linuxgroove.com/ping';
-  const url = 'https://landscape.linuxgroove.com/message-system';
+  final envVars = io.Platform.environment;
+  final pingUrl =
+      envVars['LANDSCAPE_PING_URL'] ?? 'http://landscape.linuxgroove.com/ping';
+  final url = envVars['LANDSCAPE_URL'] ??
+      'https://landscape.linuxgroove.com/message-system';
+
+  print(pingUrl);
+  print(url);
+
   final ProcessCmd cmd = ProcessCmd('landscape-config', [
     '--silent',
     '--url',
