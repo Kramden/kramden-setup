@@ -73,13 +73,13 @@ class LandscapePage extends StatefulWidget {
 }
 
 class _LandscapePageState extends State<LandscapePage> {
-  String _kramdenIdentifier() {
+  String _identifier() {
     final config = io.File('/etc/hostname').readAsLinesSync();
     final hostname = config.first.toString();
     return hostname;
   }
 
-  String get kramndenIdentifier => _kramdenIdentifier();
+  String get identifier => _identifier();
 
   @override
   void initState() {
@@ -88,7 +88,6 @@ class _LandscapePageState extends State<LandscapePage> {
 
   @override
   Widget build(BuildContext context) {
-    //final model = context.watch<LandscapeModel>();
     return Scaffold(
       body: Padding(
           padding: const EdgeInsets.all(kYaruPagePadding),
@@ -98,18 +97,18 @@ class _LandscapePageState extends State<LandscapePage> {
               children: [
                 Row(
                   children: [
-                    Text('Register $kramndenIdentifier with Landscape'),
+                    Text('Register $identifier with Landscape'),
                     const Padding(padding: EdgeInsets.all(10)),
                     ElevatedButton(
                       onPressed: () async {
-                        await register(kramndenIdentifier).then((value) {
+                        await register(identifier).then((value) {
                           showDialog<void>(
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
                                 title: Text('${value ? "Success" : "Failed"}!'),
                                 content: Text(
-                                    'Registration for $kramndenIdentifier was ${value ? "successful" : "unsuccessful"}'),
+                                    'Registration for $identifier was ${value ? "successful" : "unsuccessful"}'),
                                 actions: <Widget>[
                                   TextButton(
                                     onPressed: () {

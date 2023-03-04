@@ -44,7 +44,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
   late String hardwareModel = "";
   late String cpuModel = "";
   late String OSName = "";
-  late String kramdenIdentifier = "";
+  late String identifier = "";
 
   void getSystemInfo() async {
     final client = DBusClient.system();
@@ -66,14 +66,14 @@ class _SysinfoPageState extends State<SysinfoPage> {
       print('$name: ${value.toNative()}');
     });
     if (hostname.startsWith("K") || hostname.startsWith("k")) {
-      kramdenIdentifier = hostname;
+      identifier = hostname;
     }
     print("==================================");
     print(hostname);
     print(vendor);
     print(hardwareModel);
     print(OSName);
-    print(kramdenIdentifier);
+    print(identifier);
 
     final ProcessCmd cmd = ProcessCmd('grep', ['model name', '/proc/cpuinfo']);
     final result = await runCmd(cmd, verbose: false, commandVerbose: false);
@@ -139,7 +139,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Kramden Identifier: $kramdenIdentifier"),
+                      Text("Identifier: $identifier"),
                       Text("Manufacturer: $vendor"),
                       Text("Model: $hardwareModel"),
                       Text("CPU: $cpuModel"),
