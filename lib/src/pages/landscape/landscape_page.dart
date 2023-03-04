@@ -92,42 +92,43 @@ class _LandscapePageState extends State<LandscapePage> {
     return Scaffold(
       body: Padding(
           padding: const EdgeInsets.all(kYaruPagePadding),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text('Register $kramndenIdentifier with Landscape'),
-                  const Padding(padding: EdgeInsets.all(10)),
-                  ElevatedButton(
-                    onPressed: () async {
-                      await register(kramndenIdentifier).then((value) {
-                        showDialog<void>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('${value ? "Success" : "Failed"}!'),
-                              content: Text(
-                                  'Registration for $kramndenIdentifier was ${value ? "successful" : "unsuccessful"}'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      });
-                    },
-                    child: const Text('Register'),
-                  ),
-                ],
-              ),
-            ], //children
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text('Register $kramndenIdentifier with Landscape'),
+                    const Padding(padding: EdgeInsets.all(10)),
+                    ElevatedButton(
+                      onPressed: () async {
+                        await register(kramndenIdentifier).then((value) {
+                          showDialog<void>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('${value ? "Success" : "Failed"}!'),
+                                content: Text(
+                                    'Registration for $kramndenIdentifier was ${value ? "successful" : "unsuccessful"}'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        });
+                      },
+                      child: const Text('Register'),
+                    ),
+                  ],
+                ),
+              ], //children
+            ),
           )),
       appBar: AppBar(
         title: Image(
