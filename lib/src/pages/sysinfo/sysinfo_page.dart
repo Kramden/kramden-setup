@@ -1,11 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:dbus/dbus.dart';
+import 'package:flutter/material.dart';
 import 'package:process_run/cmd_run.dart';
 import 'package:provider/provider.dart';
 import 'package:upower/upower.dart';
 import 'package:yaru_icons/yaru_icons.dart';
 import 'package:yaru_widgets/yaru_widgets.dart';
-import '../../../widgets.dart';
 
 class SysinfoPage extends StatefulWidget {
   //static var buildDetail;
@@ -43,6 +42,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
   late String vendor = "";
   late String hostname = "";
   late String hardwareModel = "";
+  late String cpuModel = "";
   late String OSName = "";
   late String kramdenIdentifier = "";
 
@@ -75,16 +75,11 @@ class _SysinfoPageState extends State<SysinfoPage> {
     print(OSName);
     print(kramdenIdentifier);
 
-    /*
     final ProcessCmd cmd = ProcessCmd('grep', ['model name', '/proc/cpuinfo']);
     final result = await runCmd(cmd, verbose: false, commandVerbose: false);
-    final output = result.stdout;
-    final system = output.split(': ');
-    print(system[0]);
-    print("HERE");
-    print(output);
-    //print(systemRam);
-    */
+    cpuModel =
+        result.stdout.toString().split(': ')[1].split('model name')[0].trim();
+    print(cpuModel);
   }
 
   void getMemoryInfo() async {
@@ -147,7 +142,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
                       Text("Kramden Identifier: $kramdenIdentifier"),
                       Text("Manufacturer: $vendor"),
                       Text("Model: $hardwareModel"),
-                      Text("CPU: $hardDriveAvailable"),
+                      Text("CPU: $cpuModel"),
                       Text("OS: $OSName"),
                     ],
                   ),
