@@ -1,5 +1,5 @@
-name: kramden_setup
-description: Kramden Setup Tool
+name: provider_setup
+description: Provider Setup Tool
 publish_to: 'none'
 
 environment:
