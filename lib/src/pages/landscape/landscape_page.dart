@@ -12,9 +12,8 @@ import 'package:yaru_widgets/yaru_widgets.dart';
 import '../../../widgets.dart';
 
 bool isRegistered() {
-  if (io.File('/etc/landscape/client2.conf').existsSync()) {
-    final config = io.File('/etc/landscape/client2.conf').readAsLinesSync();
-
+  if (io.File('/etc/landscape/client.conf').existsSync()) {
+    final config = io.File('/etc/landscape/client.conf').readAsLinesSync();
     final ini = Config.fromStrings(config.toList());
     return ini.hasOption("client", "computer_title");
   } else {
