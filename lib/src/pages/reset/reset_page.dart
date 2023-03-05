@@ -96,7 +96,7 @@ class _ResetPageState extends State<ResetPage> {
 
   Future<bool> runReset() async {
     final ProcessCmd cmd = ProcessCmd(
-      'pkexec',
+      'sudo',
       [
         '/usr/share/provider/provider-reset',
       ],
@@ -107,7 +107,7 @@ class _ResetPageState extends State<ResetPage> {
 
   Future<bool> runReboot() async {
     final ProcessCmd cmd = ProcessCmd(
-      'pkexec',
+      'sudo',
       ['reboot'],
     );
     final result = await runCmd(cmd, verbose: true);

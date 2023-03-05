@@ -22,7 +22,7 @@ bool isRegistered() {
 
 Future<bool> register(String identifier) async {
   final ProcessCmd cmd = ProcessCmd(
-      'pkexec', ['hostnamectl', 'set-hostname', identifier.toUpperCase()]);
+      'sudo', ['hostnamectl', 'set-hostname', identifier.toUpperCase()]);
   final result = await runCmd(cmd, verbose: true, commandVerbose: true);
   return result.exitCode == 0;
 }

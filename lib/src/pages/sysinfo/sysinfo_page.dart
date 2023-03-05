@@ -65,7 +65,9 @@ class _SysinfoPageState extends State<SysinfoPage> {
       }
       print('$name: ${value.toNative()}');
     });
-    if (hostname.startsWith("K") || hostname.startsWith("k")) {
+    if (hostname.startsWith("K") ||
+        hostname.startsWith("D") ||
+        hostname.startsWith("L")) {
       identifier = hostname;
     }
     print("==================================");

@@ -47,7 +47,7 @@ Future<bool> register(String identifier) async {
   print(pingUrl);
   print(url);
 
-  final ProcessCmd cmd = ProcessCmd('pkexec', [
+  final ProcessCmd cmd = ProcessCmd('sudo', [
     'landscape-config',
     '--silent',
     '--url',
