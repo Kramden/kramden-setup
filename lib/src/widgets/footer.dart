@@ -1,5 +1,6 @@
 import 'dart:io' as io;
 import 'package:flutter/material.dart';
+import 'package:ini/ini.dart';
 
 class Footer extends StatelessWidget {
   const Footer({super.key});
@@ -7,13 +8,16 @@ class Footer extends StatelessWidget {
   static const String provider = '';
 
   static String getProvider() {
-    if (io.File('/etc/provider').existsSync()) {
-      final config = io.File('/etc/provider').readAsLinesSync();
-      final provider = config.first.toString();
-      return provider;
-    } else {
-      return 'kramden';
+    String provider = 'kramden';
+
+    if (io.File('/etc/provider.conf').existsSync()) {
+      final config = io.File('/etc/provider.conf').readAsLinesSync();
+      final ini = Config.fromStrings(config.toList());
+      if (ini.hasOption("provider", "name")) {
+        provider = ini.get("provider", "name").toString();
+      }
     }
+    return provider;
   }
 
   @override

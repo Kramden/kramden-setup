@@ -22,11 +22,27 @@ bool isRegistered() {
 }
 
 Future<bool> register(String identifier) async {
+  String url = '';
+  String pingUrl = '';
+
   final envVars = io.Platform.environment;
-  final pingUrl =
-      envVars['LANDSCAPE_PING_URL'] ?? 'http://landscape.linuxgroove.com/ping';
-  final url = envVars['LANDSCAPE_URL'] ??
-      'https://landscape.linuxgroove.com/message-system';
+  if (envVars.containsKey('LANDSCAPE_PING_URL')) {
+    pingUrl = envVars['LANDSCAPE_PING_URL'].toString();
+  }
+  if (envVars.containsKey('LANDSCAPE_URL')) {
+    url = envVars['LANDSCAPE_URL'].toString();
+  }
+
+  if (io.File('/etc/provider.conf').existsSync()) {
+    final config = io.File('/etc/provider.conf').readAsLinesSync();
+    final ini = Config.fromStrings(config.toList());
+    if (url.isEmpty && ini.hasOption("provider", "landscape_url")) {
+      url = ini.get("provider", "landscape_url").toString();
+    }
+    if (pingUrl.isEmpty && ini.hasOption("provider", "landscape_ping_url")) {
+      pingUrl = ini.get("provider", "landscape_ping_url").toString();
+    }
+  }
 
   print(pingUrl);
   print(url);
