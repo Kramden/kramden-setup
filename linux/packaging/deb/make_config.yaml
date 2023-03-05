@@ -1,0 +1,24 @@
+display_name: Provider Setup
+package_name: provider-setup
+maintainer:
+  name: Ken VanDine
+  email: ken.vandine@ubuntu.com
+priority: optional
+section: x11
+installed_size: 6604
+essential: false
+icon: assets/images/kramden-icon.png
+
+dependencies:
+  - kramden-overrides | compudopt-overrides
+
+keywords:
+  - Kramden
+  - Compudopt
+
+generic_name: Provider Setup
+
+categories:
+  - Utilities
+
+startup_notify: true

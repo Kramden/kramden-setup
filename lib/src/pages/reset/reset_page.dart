@@ -98,7 +98,7 @@ class _ResetPageState extends State<ResetPage> {
     final ProcessCmd cmd = ProcessCmd(
       'pkexec',
       [
-        'provider-reset',
+        '/usr/share/provider/provider-reset',
       ],
     );
     final result = await runCmd(cmd, verbose: true);
