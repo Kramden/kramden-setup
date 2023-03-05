@@ -1,5 +1,3 @@
-import 'dart:io' as io;
-
 import 'package:flutter/material.dart';
 import 'package:process_run/cmd_run.dart';
 import 'package:provider/provider.dart';
@@ -47,9 +45,72 @@ class _ResetPageState extends State<ResetPage> {
           child: Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  width: 400,
+                  child: Column(
+                    children: [
+                      const Text(
+                        "Reset the system and prepare for a new user",
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 20),
+                      YaruIconButton(
+                        onPressed: () async {
+                          await runReset().then((value) {
+                            showDialog<void>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title:
+                                      Text('${value ? "Success" : "Failed"}!'),
+                                  content: Text(
+                                      'Reset was ${value ? "successful, reboot now" : "unsuccessful"}'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        if (value) {
+                                          runReboot();
+                                        }
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(value ? "Reboot" : "OK"),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          });
+                        },
+                        icon: const Icon(YaruIcons.reboot),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           )),
       bottomNavigationBar: const Footer(),
     );
+  }
+
+  Future<bool> runReset() async {
+    final ProcessCmd cmd = ProcessCmd(
+      'provider-reset',
+      [
+        'y',
+      ],
+    );
+    final result = await runCmd(cmd, verbose: true);
+    return result.exitCode == 0;
+  }
+
+  Future<bool> runReboot() async {
+    final ProcessCmd cmd = ProcessCmd(
+      'reboot',
+      [],
+    );
+    final result = await runCmd(cmd, verbose: true);
+    return result.exitCode == 0;
   }
 }
