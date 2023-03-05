@@ -1,10 +1,10 @@
 [Desktop Entry]
 Type=Application
 Version=1.0
-Name=Kramden Setup Tool
-Comment=Kramden Setup Tool
+Name=Provider Setup Tool
+Comment=Provider Setup Tool
 Keywords=kramden;setup;
-Exec=kramden-setup
-Icon=kramden-logo.png
+Exec=provider_setup
+Icon=provider-icon.png
 Terminal=false
 Categories=Utilities;
