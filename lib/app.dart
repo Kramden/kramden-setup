@@ -23,7 +23,7 @@ class KramdenSetupApp extends StatelessWidget {
         themeMode: context.select((Settings s) => s.theme),
         builder: (context, child) => Scaffold(
           appBar: const YaruWindowTitleBar(
-            title: Text("Kramden Setup Tool"),
+            title: Text("Setup"),
           ),
           body: child,
         ),
