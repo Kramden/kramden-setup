@@ -184,11 +184,6 @@ class _SysinfoPageState extends State<SysinfoPage> {
           ],
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => getBatteryInfo(),
-        child: const Icon(YaruIcons.refresh),
-      ),
     );
   }
 }

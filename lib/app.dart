@@ -13,14 +13,11 @@ class KramdenSetupApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return YaruTheme(
-      data: YaruThemeData(
-        variant: context.select((Settings s) => s.variant),
-      ),
       builder: (context, yaru, child) => MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: yaru.theme,
         darkTheme: yaru.darkTheme,
-        themeMode: context.select((Settings s) => s.theme),
+        themeMode: ThemeMode.dark,
         builder: (context, child) => Scaffold(
           appBar: const YaruWindowTitleBar(
             title: Text("Setup"),
@@ -47,15 +44,6 @@ class KramdenSetupPage extends StatelessWidget {
         style: YaruNavigationRailStyle.labelled,
       ),
       pageBuilder: (context, index) => pages[index].pageBuilder(context),
-      trailing: YaruNavigationRailItem(
-        icon: const Icon(YaruIcons.settings),
-        label: const Text("Settings"),
-        style: YaruNavigationRailStyle.labelled,
-        onTap: () => showSettingsDialog(
-          context: context,
-          themePreviewBuilder: (_) => const KramdenSetupPreview(),
-        ),
-      ),
     );
   }
 }
@@ -80,11 +68,6 @@ class KramdenSetupPreview extends StatelessWidget {
           selected: selected,
         ),
         pageBuilder: (context, index) => const SizedBox.shrink(),
-        trailing: YaruNavigationRailItem(
-          icon: const Icon(YaruIcons.settings),
-          label: const Text("Settings"),
-          style: YaruNavigationRailStyle.compact,
-        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
