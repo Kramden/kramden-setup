@@ -144,7 +144,7 @@ class _IdentifyPageState extends State<IdentifyPage> {
                                 );
                               });
                             },
-                            child: const Text('Register'),
+                            child: const Text('Set'),
                           ),
                         ],
                       ),
