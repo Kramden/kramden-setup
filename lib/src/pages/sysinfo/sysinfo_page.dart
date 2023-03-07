@@ -31,20 +31,20 @@ class SysinfoPage extends StatefulWidget {
 }
 
 class _SysinfoPageState extends State<SysinfoPage> {
-  late String batteryCapacity = "";
-  late String hardDriveCapacity = "";
-  late String systemRam = "";
-  late String hardDriveUsed = "";
-  late String hardDriveAvailable = "";
-  late String hardDriveUsage = "";
-  late String memoryTotal = "";
-  late String swapTotal = "";
-  late String vendor = "";
-  late String hostname = "";
-  late String hardwareModel = "";
-  late String cpuModel = "";
-  late String OSName = "";
-  late String identifier = "";
+  String batteryCapacity = "";
+  String hardDriveCapacity = "";
+  String systemRam = "";
+  String hardDriveUsed = "";
+  String hardDriveAvailable = "";
+  String hardDriveUsage = "";
+  String memoryTotal = "";
+  String swapTotal = "";
+  String vendor = "";
+  String hostname = "";
+  String hardwareModel = "";
+  String cpuModel = "";
+  String OSName = "";
+  String identifier = "";
 
   void getSystemInfo() async {
     final client = DBusClient.system();
@@ -82,6 +82,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
     cpuModel =
         result.stdout.toString().split(': ')[1].split('model name')[0].trim();
     //print(cpuModel);
+    setState(() {});
   }
 
   void getMemoryInfo() async {
@@ -91,6 +92,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
     final memory = output.split('        ');
     memoryTotal = memory[4].trim();
     swapTotal = memory[10].trim();
+    setState(() {});
   }
 
   void getHardDriveInfo() async {
@@ -106,10 +108,10 @@ class _SysinfoPageState extends State<SysinfoPage> {
         .toString()
         .trimLeft()
         .trimRight();
-    print(hardDriveCapacity);
+    //print(hardDriveCapacity);
     final ProcessCmd usedCmd = ProcessCmd('df', ['-h', '--output=used', '/']);
     final usedResult =
-        await runCmd(usedCmd, verbose: false, commandVerbose: true);
+        await runCmd(usedCmd, verbose: false, commandVerbose: false);
     hardDriveUsed = usedResult.stdout
         .toString()
         .trimLeft()
@@ -118,10 +120,10 @@ class _SysinfoPageState extends State<SysinfoPage> {
         .toString()
         .trimLeft()
         .trimRight();
-    print(hardDriveUsed);
+    //print(hardDriveUsed);
     final ProcessCmd availCmd = ProcessCmd('df', ['-h', '--output=avail', '/']);
     final availResult =
-        await runCmd(availCmd, verbose: true, commandVerbose: true);
+        await runCmd(availCmd, verbose: true, commandVerbose: false);
     hardDriveAvailable = availResult.stdout
         .toString()
         .trimLeft()
@@ -133,7 +135,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
     //print(hardDriveAvailable);
     final ProcessCmd usageCmd = ProcessCmd('df', ['-h', '--output=pcent', '/']);
     final usageResult =
-        await runCmd(usageCmd, verbose: false, commandVerbose: true);
+        await runCmd(usageCmd, verbose: false, commandVerbose: false);
     hardDriveUsage = usageResult.stdout
         .toString()
         .trimLeft()
@@ -143,6 +145,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
         .trimLeft()
         .trimRight();
     //print(hardDriveUsage);
+    setState(() {});
   }
 
   void getBatteryInfo() async {
@@ -156,6 +159,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
       }
     }
     upower.close();
+    setState(() {});
   }
 
   @override
