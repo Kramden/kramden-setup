@@ -63,25 +63,25 @@ class _SysinfoPageState extends State<SysinfoPage> {
       } else if (name == 'OperatingSystemPrettyName') {
         OSName = value.toNative();
       }
-      print('$name: ${value.toNative()}');
+      //print('$name: ${value.toNative()}');
     });
     if (hostname.startsWith("K") ||
         hostname.startsWith("D") ||
         hostname.startsWith("L")) {
       identifier = hostname;
     }
-    print("==================================");
-    print(hostname);
-    print(vendor);
-    print(hardwareModel);
-    print(OSName);
-    print(identifier);
+    //print("==================================");
+    //print(hostname);
+    //print(vendor);
+    //print(hardwareModel);
+    //print(OSName);
+    //print(identifier);
 
     final ProcessCmd cmd = ProcessCmd('grep', ['model name', '/proc/cpuinfo']);
     final result = await runCmd(cmd, verbose: false, commandVerbose: false);
     cpuModel =
         result.stdout.toString().split(': ')[1].split('model name')[0].trim();
-    print(cpuModel);
+    //print(cpuModel);
   }
 
   void getMemoryInfo() async {
@@ -94,14 +94,55 @@ class _SysinfoPageState extends State<SysinfoPage> {
   }
 
   void getHardDriveInfo() async {
-    final ProcessCmd cmd = ProcessCmd('df', ['-h', '/']);
-    final result = await runCmd(cmd, verbose: false, commandVerbose: false);
-    final output = result.stdout.toString();
-    final hardDrive = output.split('  ');
-    hardDriveCapacity = hardDrive[5];
-    hardDriveUsed = hardDrive[6];
-    hardDriveAvailable = hardDrive[7];
-    hardDriveUsage = hardDrive[8];
+    final ProcessCmd capacityCmd =
+        ProcessCmd('df', ['-h', '--output=size', '/']);
+    final capacityResult =
+        await runCmd(capacityCmd, verbose: false, commandVerbose: false);
+    hardDriveCapacity = capacityResult.stdout
+        .toString()
+        .trimLeft()
+        .replaceAll('  ', ' ')
+        .split(' ')[1]
+        .toString()
+        .trimLeft()
+        .trimRight();
+    print(hardDriveCapacity);
+    final ProcessCmd usedCmd = ProcessCmd('df', ['-h', '--output=used', '/']);
+    final usedResult =
+        await runCmd(usedCmd, verbose: false, commandVerbose: true);
+    hardDriveUsed = usedResult.stdout
+        .toString()
+        .trimLeft()
+        .replaceAll('  ', ' ')
+        .split(' ')[1]
+        .toString()
+        .trimLeft()
+        .trimRight();
+    print(hardDriveUsed);
+    final ProcessCmd availCmd = ProcessCmd('df', ['-h', '--output=avail', '/']);
+    final availResult =
+        await runCmd(availCmd, verbose: true, commandVerbose: true);
+    hardDriveAvailable = availResult.stdout
+        .toString()
+        .trimLeft()
+        .replaceAll('  ', ' ')
+        .split(' ')[1]
+        .toString()
+        .trimLeft()
+        .trimRight();
+    //print(hardDriveAvailable);
+    final ProcessCmd usageCmd = ProcessCmd('df', ['-h', '--output=pcent', '/']);
+    final usageResult =
+        await runCmd(usageCmd, verbose: false, commandVerbose: true);
+    hardDriveUsage = usageResult.stdout
+        .toString()
+        .trimLeft()
+        .replaceAll('  ', ' ')
+        .split(' ')[1]
+        .toString()
+        .trimLeft()
+        .trimRight();
+    //print(hardDriveUsage);
   }
 
   void getBatteryInfo() async {
@@ -109,8 +150,8 @@ class _SysinfoPageState extends State<SysinfoPage> {
     await upower.connect();
     for (var device in upower.devices) {
       if (device.type == UPowerDeviceType.battery) {
-        print("Capacity: ${device.capacity.round()}");
-        print("Percentage: ${device.percentage}");
+        //print("Capacity: ${device.capacity.round()}");
+        //print("Percentage: ${device.percentage}");
         batteryCapacity = device.capacity.round().toString();
       }
     }
