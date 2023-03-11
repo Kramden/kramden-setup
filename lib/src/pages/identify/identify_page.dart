@@ -55,17 +55,13 @@ class _IdentifyPageState extends State<IdentifyPage> {
     }
   }
 
-  Future<bool> identify(String identifier) async {
-    print("Setting identifier to $identifier");
-
+  Future<bool> identify(String value) async {
     final ProcessCmd cmd = ProcessCmd(
-        'sudo', ['hostnamectl', 'set-hostname', identifier.toUpperCase()]);
+        'sudo', ['hostnamectl', 'set-hostname', value.toUpperCase()]);
     final result = await runCmd(cmd, verbose: true, commandVerbose: true);
     setState(() {
       identifier = _identifier();
     });
-
-    print("Identifier is now $identifier");
     return result.exitCode == 0;
   }
 
