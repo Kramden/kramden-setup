@@ -15,10 +15,6 @@ class IdentifyPage extends StatefulWidget {
 
   static Widget buildIcon(BuildContext context) {
     return const Icon(YaruIcons.ubuntu_logo_simple);
-    /*
-    return const ImageIcon(
-        ExactAssetImage('assets/images/compudopt-icon-white.png', scale: 1.0));
-    */
   }
 
   static Widget buildTitle(BuildContext context) {
@@ -67,8 +63,9 @@ class _IdentifyPageState extends State<IdentifyPage> {
     final result = await runCmd(cmd, verbose: true, commandVerbose: true);
     setState(() {
       identifier = _identifier();
-      print("Identifier is now $identifier");
     });
+
+    print("Identifier is now $identifier");
     return result.exitCode == 0;
   }
 
