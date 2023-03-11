@@ -11,58 +11,6 @@ import 'package:yaru_widgets/yaru_widgets.dart';
 
 import '../../../widgets.dart';
 
-bool isRegistered() {
-  if (io.File('/etc/landscape/client.conf').existsSync()) {
-    final config = io.File('/etc/landscape/client.conf').readAsLinesSync();
-    final ini = Config.fromStrings(config.toList());
-    return ini.hasOption("client", "computer_title");
-  } else {
-    return false;
-  }
-}
-
-Future<bool> register(String identifier) async {
-  String url = '';
-  String pingUrl = '';
-
-  final envVars = io.Platform.environment;
-  if (envVars.containsKey('LANDSCAPE_PING_URL')) {
-    pingUrl = envVars['LANDSCAPE_PING_URL'].toString();
-  }
-  if (envVars.containsKey('LANDSCAPE_URL')) {
-    url = envVars['LANDSCAPE_URL'].toString();
-  }
-
-  if (io.File('/etc/provider.conf').existsSync()) {
-    final config = io.File('/etc/provider.conf').readAsLinesSync();
-    final ini = Config.fromStrings(config.toList());
-    if (url.isEmpty && ini.hasOption("provider", "landscape_url")) {
-      url = ini.get("provider", "landscape_url").toString();
-    }
-    if (pingUrl.isEmpty && ini.hasOption("provider", "landscape_ping_url")) {
-      pingUrl = ini.get("provider", "landscape_ping_url").toString();
-    }
-  }
-
-  print(pingUrl);
-  print(url);
-
-  final ProcessCmd cmd = ProcessCmd('sudo', [
-    'landscape-config',
-    '--silent',
-    '--url',
-    url,
-    '--ping-url',
-    pingUrl,
-    '--account-name',
-    'standalone',
-    '--computer-title',
-    identifier
-  ]);
-  final result = await runCmd(cmd, verbose: true, commandVerbose: true);
-  return result.exitCode == 0;
-}
-
 class LandscapePage extends StatefulWidget {
   //static var buildDetail;
 
@@ -97,9 +45,70 @@ class _LandscapePageState extends State<LandscapePage> {
 
   String get identifier => _identifier();
 
+  bool _processing = false;
+  bool _registered = false;
+
+  bool isRegistered() {
+    if (io.File('/etc/landscape/client.conf').existsSync()) {
+      final config = io.File('/etc/landscape/client.conf').readAsLinesSync();
+      final ini = Config.fromStrings(config.toList());
+      return ini.hasOption("client", "computer_title");
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> register(String identifier) async {
+    String url = '';
+    String pingUrl = '';
+
+    setState(() {
+      _processing = true;
+    });
+
+    final envVars = io.Platform.environment;
+    if (envVars.containsKey('LANDSCAPE_PING_URL')) {
+      pingUrl = envVars['LANDSCAPE_PING_URL'].toString();
+    }
+    if (envVars.containsKey('LANDSCAPE_URL')) {
+      url = envVars['LANDSCAPE_URL'].toString();
+    }
+
+    if (io.File('/etc/provider.conf').existsSync()) {
+      final config = io.File('/etc/provider.conf').readAsLinesSync();
+      final ini = Config.fromStrings(config.toList());
+      if (url.isEmpty && ini.hasOption("provider", "landscape_url")) {
+        url = ini.get("provider", "landscape_url").toString();
+      }
+      if (pingUrl.isEmpty && ini.hasOption("provider", "landscape_ping_url")) {
+        pingUrl = ini.get("provider", "landscape_ping_url").toString();
+      }
+    }
+
+    final ProcessCmd cmd = ProcessCmd('sudo', [
+      'landscape-config',
+      '--silent',
+      '--url',
+      url,
+      '--ping-url',
+      pingUrl,
+      '--account-name',
+      'standalone',
+      '--computer-title',
+      identifier
+    ]);
+    final result = await runCmd(cmd, verbose: true, commandVerbose: true);
+    setState(() {
+      _registered = isRegistered();
+      _processing = false;
+    });
+    return result.exitCode == 0;
+  }
+
   @override
   void initState() {
     super.initState();
+    _registered = isRegistered();
   }
 
   @override
@@ -108,42 +117,49 @@ class _LandscapePageState extends State<LandscapePage> {
       body: Padding(
           padding: const EdgeInsets.all(kYaruPagePadding),
           child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text('Register $identifier with Landscape'),
-                    const Padding(padding: EdgeInsets.all(10)),
-                    ElevatedButton(
-                      onPressed: () async {
-                        await register(identifier).then((value) {
-                          showDialog<void>(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text('${value ? "Success" : "Failed"}!'),
-                                content: Text(
-                                    'Registration for $identifier was ${value ? "successful" : "unsuccessful"}'),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Text('OK'),
-                                  ),
-                                ],
-                              );
+            child: _processing == true
+                ? const YaruCircularProgressIndicator()
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          _registered
+                              ? Text('$identifier is registered with Landscape')
+                              : Text('Register $identifier with Landscape'),
+                          const Padding(padding: EdgeInsets.all(10)),
+                          ElevatedButton(
+                            onPressed: () async {
+                              await register(identifier).then((value) {
+                                showDialog<void>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text(
+                                          '${value ? "Success" : "Failed"}!'),
+                                      content: Text(
+                                          'Registration for $identifier was ${value ? "successful" : "unsuccessful"}'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              });
                             },
-                          );
-                        });
-                      },
-                      child: const Text('Register'),
-                    ),
-                  ],
-                ),
-              ], //children
-            ),
+                            child: _registered
+                                ? const Text('Re-register')
+                                : const Text('Register'),
+                          ),
+                        ],
+                      ),
+                    ], //children
+                  ),
           )),
       appBar: AppBar(
         title: Image(
