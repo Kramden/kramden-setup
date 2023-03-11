@@ -52,7 +52,11 @@ class _LandscapePageState extends State<LandscapePage> {
     if (io.File('/etc/landscape/client.conf').existsSync()) {
       final config = io.File('/etc/landscape/client.conf').readAsLinesSync();
       final ini = Config.fromStrings(config.toList());
-      return ini.hasOption("client", "computer_title");
+      if (ini.hasOption("client", "computer_title")) {
+        return ini.get("client", "computer_title").toString() == identifier;
+      } else {
+        return false;
+      }
     } else {
       return false;
     }
