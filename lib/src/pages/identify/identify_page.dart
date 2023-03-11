@@ -8,25 +8,6 @@ import 'package:yaru_widgets/yaru_widgets.dart';
 
 import '../../../widgets.dart';
 
-bool isRegistered() {
-  if (io.File('/etc/hostname').existsSync()) {
-    final config = io.File('/etc/hostname').readAsLinesSync();
-    final hostname = config.first.toString();
-    return hostname.startsWith('K') ||
-        hostname.startsWith('L') ||
-        hostname.startsWith('D');
-  } else {
-    return false;
-  }
-}
-
-Future<bool> register(String identifier) async {
-  final ProcessCmd cmd = ProcessCmd(
-      'sudo', ['hostnamectl', 'set-hostname', identifier.toUpperCase()]);
-  final result = await runCmd(cmd, verbose: true, commandVerbose: true);
-  return result.exitCode == 0;
-}
-
 class IdentifyPage extends StatefulWidget {
   //static var buildDetail;
 
@@ -58,6 +39,7 @@ class IdentifyPage extends StatefulWidget {
 
 class _IdentifyPageState extends State<IdentifyPage> {
   late TextEditingController _controller;
+  String identifier = "";
 
   String _identifier() {
     final config = io.File('/etc/hostname').readAsLinesSync();
@@ -65,11 +47,35 @@ class _IdentifyPageState extends State<IdentifyPage> {
     return hostname;
   }
 
-  String get identifier => _identifier();
+  bool isIdentified() {
+    if (io.File('/etc/hostname').existsSync()) {
+      final config = io.File('/etc/hostname').readAsLinesSync();
+      final hostname = config.first.toString();
+      return hostname.startsWith('K') ||
+          hostname.startsWith('L') ||
+          hostname.startsWith('D');
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> identify(String identifier) async {
+    print("Setting identifier to $identifier");
+
+    final ProcessCmd cmd = ProcessCmd(
+        'sudo', ['hostnamectl', 'set-hostname', identifier.toUpperCase()]);
+    final result = await runCmd(cmd, verbose: true, commandVerbose: true);
+    setState(() {
+      identifier = _identifier();
+      print("Identifier is now $identifier");
+    });
+    return result.exitCode == 0;
+  }
 
   @override
   void initState() {
     super.initState();
+    identifier = _identifier();
     _controller = TextEditingController();
   }
 
@@ -95,7 +101,7 @@ class _IdentifyPageState extends State<IdentifyPage> {
                             child: TextField(
                               controller: _controller,
                               onSubmitted: (String value) async {
-                                await register(value).then((value) {
+                                await identify(value).then((value) {
                                   showDialog<void>(
                                     context: context,
                                     builder: (BuildContext context) {
@@ -103,7 +109,7 @@ class _IdentifyPageState extends State<IdentifyPage> {
                                         title: Text(
                                             '${value ? "Success" : "Failed"}!'),
                                         content: Text(
-                                            'Registration for ${_controller.text} was ${value ? "successful" : "unsuccessful"}'),
+                                            'Identification for ${_controller.text} was ${value ? "successful" : "unsuccessful"}'),
                                         actions: <Widget>[
                                           TextButton(
                                             onPressed: () {
@@ -122,7 +128,7 @@ class _IdentifyPageState extends State<IdentifyPage> {
                           const Padding(padding: EdgeInsets.all(10)),
                           ElevatedButton(
                             onPressed: () async {
-                              await register(_controller.text).then((value) {
+                              await identify(_controller.text).then((value) {
                                 showDialog<void>(
                                   context: context,
                                   builder: (BuildContext context) {
