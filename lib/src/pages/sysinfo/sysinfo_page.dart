@@ -200,7 +200,13 @@ class _SysinfoPageState extends State<SysinfoPage> {
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Capacity: $hardDriveCapacity"),
+                      Text(
+                          style:
+                              int.parse(hardDriveCapacity.replaceAll('G', '')) <
+                                      120
+                                  ? const TextStyle(color: Colors.orange)
+                                  : const TextStyle(color: Colors.green),
+                          "Capacity: $hardDriveCapacity"),
                       Text("Used: $hardDriveUsed"),
                       Text("Available: $hardDriveAvailable"),
                       Text("Usage: $hardDriveUsage"),
@@ -213,15 +219,27 @@ class _SysinfoPageState extends State<SysinfoPage> {
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Total RAM: $memoryTotal"),
-                      Text("Total swap: $swapTotal"),
+                      Text(
+                          style: int.parse(memoryTotal.replaceAll('G', '')) < 8
+                              ? const TextStyle(color: Colors.orange)
+                              : const TextStyle(color: Colors.green),
+                          "Total RAM: $memoryTotal"),
+                      Text(
+                          style: double.parse(swapTotal.replaceAll('G', '')) < 4
+                              ? const TextStyle(color: Colors.orange)
+                              : const TextStyle(color: Colors.green),
+                          "Total swap: $swapTotal"),
                     ],
                   ),
                   style: YaruTileStyle.normal,
                 ),
                 YaruTile(
                   title: const Text("Battery"),
-                  subtitle: Text("Capacity: ${batteryCapacity.toString()} %"),
+                  subtitle: Text(
+                      style: int.parse(batteryCapacity) < 75
+                          ? const TextStyle(color: Colors.orange)
+                          : const TextStyle(color: Colors.green),
+                      "Capacity: ${batteryCapacity.toString()} %"),
                   style: YaruTileStyle.normal,
                 ),
               ]),
