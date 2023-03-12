@@ -123,7 +123,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
     //print(hardDriveUsed);
     final ProcessCmd availCmd = ProcessCmd('df', ['-h', '--output=avail', '/']);
     final availResult =
-        await runCmd(availCmd, verbose: true, commandVerbose: false);
+        await runCmd(availCmd, verbose: false, commandVerbose: false);
     hardDriveAvailable = availResult.stdout
         .toString()
         .trimLeft()
