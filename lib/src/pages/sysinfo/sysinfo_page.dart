@@ -31,14 +31,14 @@ class SysinfoPage extends StatefulWidget {
 }
 
 class _SysinfoPageState extends State<SysinfoPage> {
-  String batteryCapacity = "";
-  String hardDriveCapacity = "";
-  String systemRam = "";
-  String hardDriveUsed = "";
-  String hardDriveAvailable = "";
-  String hardDriveUsage = "";
-  String memoryTotal = "";
-  String swapTotal = "";
+  String batteryCapacity = "0";
+  String hardDriveCapacity = "0";
+  String systemRam = "0";
+  String hardDriveUsed = "0";
+  String hardDriveAvailable = "0";
+  String hardDriveUsage = "0";
+  String memoryTotal = "0";
+  String swapTotal = "0";
   String vendor = "";
   String hostname = "";
   String hardwareModel = "";
