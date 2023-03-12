@@ -120,50 +120,60 @@ class _LandscapePageState extends State<LandscapePage> {
     return Scaffold(
       body: Padding(
           padding: const EdgeInsets.all(kYaruPagePadding),
-          child: Center(
-            child: _processing == true
-                ? const YaruCircularProgressIndicator()
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          _registered
-                              ? Text('$identifier is registered with Landscape')
-                              : Text('Register $identifier with Landscape'),
-                          const Padding(padding: EdgeInsets.all(10)),
-                          ElevatedButton(
-                            onPressed: () async {
-                              await register(identifier).then((value) {
-                                showDialog<void>(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: Text(
-                                          '${value ? "Success" : "Failed"}!'),
-                                      content: Text(
-                                          'Registration for $identifier was ${value ? "successful" : "unsuccessful"}'),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Text('OK'),
-                                        ),
-                                      ],
-                                    );
+          child: Column(
+            children: [
+              Center(
+                child: _processing == true
+                    ? const YaruCircularProgressIndicator()
+                    : YaruSection(
+                        height: 200,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                _registered
+                                    ? Text(
+                                        '$identifier is registered with Landscape')
+                                    : Text(
+                                        'Register $identifier with Landscape'),
+                                const Padding(
+                                    padding: EdgeInsets.all(kYaruPagePadding)),
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    await register(identifier).then((value) {
+                                      showDialog<void>(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text(
+                                                '${value ? "Success" : "Failed"}!'),
+                                            content: Text(
+                                                'Registration for $identifier was ${value ? "successful" : "unsuccessful"}'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    });
                                   },
-                                );
-                              });
-                            },
-                            child: _registered
-                                ? const Text('Re-register')
-                                : const Text('Register'),
-                          ),
-                        ],
+                                  child: _registered
+                                      ? const Text('Re-register')
+                                      : const Text('Register'),
+                                ),
+                              ],
+                            ),
+                          ], //children
+                        ),
                       ),
-                    ], //children
-                  ),
+              ),
+            ],
           )),
       appBar: AppBar(
         title: Image(
@@ -171,6 +181,7 @@ class _LandscapePageState extends State<LandscapePage> {
                 ? 'assets/images/landscape_light.png'
                 : 'assets/images/landscape_dark.png')),
       ),
+      bottomNavigationBar: const Footer(),
     );
   }
 }

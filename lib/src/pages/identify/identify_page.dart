@@ -77,81 +77,88 @@ class _IdentifyPageState extends State<IdentifyPage> {
     return Scaffold(
       body: Padding(
           padding: const EdgeInsets.all(kYaruPagePadding),
-          child: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  width: 300,
-                  child: Column(
-                    children: [
-                      YaruTile(title: Text("Identifier: $identifier")),
-                      const YaruTile(
-                          title: Text('Please enter system identifier:')),
-                      Row(
+          child: Column(
+            children: [
+              YaruTile(title: Text("Identifier: $identifier")),
+              const Padding(padding: EdgeInsets.all(kYaruPagePadding)),
+              YaruSection(
+                height: 150,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 300,
+                      child: Column(
                         children: [
-                          Expanded(
-                            child: TextField(
-                              controller: _controller,
-                              onSubmitted: (String value) async {
-                                await identify(value).then((value) {
-                                  showDialog<void>(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: Text(
-                                            '${value ? "Success" : "Failed"}!'),
-                                        content: Text(
-                                            'Identification for ${_controller.text} was ${value ? "successful" : "unsuccessful"}'),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: const Text('OK'),
-                                          ),
-                                        ],
+                          const YaruTile(
+                              title: Text('Please enter system identifier:')),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: _controller,
+                                  onSubmitted: (String value) async {
+                                    await identify(value).then((value) {
+                                      showDialog<void>(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text(
+                                                '${value ? "Success" : "Failed"}!'),
+                                            content: Text(
+                                                'Identification for ${_controller.text} was ${value ? "successful" : "unsuccessful"}'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          );
+                                        },
                                       );
-                                    },
-                                  );
-                                });
-                              },
-                            ),
-                          ),
-                          const Padding(padding: EdgeInsets.all(10)),
-                          ElevatedButton(
-                            onPressed: () async {
-                              await identify(_controller.text).then((value) {
-                                showDialog<void>(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: Text(
-                                          '${value ? "Success" : "Failed"}!'),
-                                      content: Text(
-                                          'Registration for ${_controller.text} was ${value ? "successful" : "unsuccessful"}'),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Text('OK'),
-                                        ),
-                                      ],
-                                    );
+                                    });
                                   },
-                                );
-                              });
-                            },
-                            child: const Text('Set'),
+                                ),
+                              ),
+                              const Padding(padding: EdgeInsets.all(10)),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  await identify(_controller.text)
+                                      .then((value) {
+                                    showDialog<void>(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text(
+                                              '${value ? "Success" : "Failed"}!'),
+                                          content: Text(
+                                              'Registration for ${_controller.text} was ${value ? "successful" : "unsuccessful"}'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text('OK'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  });
+                                },
+                                child: const Text('Set'),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ], //children
                 ),
-              ], //children
-            ),
+              ),
+            ],
           )),
       bottomNavigationBar: const Footer(),
     );
