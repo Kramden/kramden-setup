@@ -179,6 +179,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
         child: Column(
           children: [
             const Text("System Info"),
+            const Padding(padding: EdgeInsets.all(10)),
             YaruSection(
               child: Column(children: [
                 YaruTile(
