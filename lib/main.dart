@@ -11,7 +11,7 @@ Future<void> main() async {
   runApp(
     ChangeNotifierProvider(
       create: (_) => Settings(),
-      child: const KramdenSetupApp(),
+      child: const ProviderSetupApp(),
     ),
   );
 }

@@ -5,8 +5,8 @@ import 'package:yaru_widgets/yaru_widgets.dart';
 
 import 'pages.dart';
 
-class KramdenSetupApp extends StatelessWidget {
-  const KramdenSetupApp({super.key});
+class ProviderSetupApp extends StatelessWidget {
+  const ProviderSetupApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,14 +22,14 @@ class KramdenSetupApp extends StatelessWidget {
           ),
           body: child,
         ),
-        home: const KramdenSetupPage(),
+        home: const ProviderSetupPage(),
       ),
     );
   }
 }
 
-class KramdenSetupPage extends StatelessWidget {
-  const KramdenSetupPage({super.key});
+class ProviderSetupPage extends StatelessWidget {
+  const ProviderSetupPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +46,8 @@ class KramdenSetupPage extends StatelessWidget {
   }
 }
 
-class KramdenSetupPreview extends StatelessWidget {
-  const KramdenSetupPreview({super.key});
+class ProviderSetupPreview extends StatelessWidget {
+  const ProviderSetupPreview({super.key});
 
   @override
   Widget build(BuildContext context) {
