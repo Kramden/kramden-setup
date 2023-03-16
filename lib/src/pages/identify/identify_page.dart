@@ -77,56 +77,26 @@ class _IdentifyPageState extends State<IdentifyPage> {
     return Scaffold(
       body: Padding(
           padding: const EdgeInsets.all(kYaruPagePadding),
-          child: Column(
-            children: [
-              YaruTile(title: Text("Identifier: $identifier")),
-              const Padding(padding: EdgeInsets.all(kYaruPagePadding)),
-              YaruSection(
-                height: 150,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 300,
-                      child: Column(
-                        children: [
-                          const YaruTile(
-                              title: Text('Please enter system identifier:')),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: TextField(
-                                  controller: _controller,
-                                  onSubmitted: (String value) async {
-                                    await identify(value).then((value) {
-                                      showDialog<void>(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: Text(
-                                                '${value ? "Success" : "Failed"}!'),
-                                            content: Text(
-                                                'Identification for ${_controller.text} was ${value ? "successful" : "unsuccessful"}'),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: const Text('OK'),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    });
-                                  },
-                                ),
-                              ),
-                              const Padding(padding: EdgeInsets.all(10)),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  await identify(_controller.text)
-                                      .then((value) {
+          child: Center(
+            child: Column(
+              children: [
+                const Padding(padding: EdgeInsets.all(kYaruPagePadding)),
+                YaruSection(
+                  height: 150,
+                  child: SizedBox(
+                    width: 300,
+                    child: Column(
+                      children: [
+                        YaruTile(title: Text("Identifier: $identifier")),
+                        const YaruTile(
+                            title: Text('Please enter system identifier:')),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                controller: _controller,
+                                onSubmitted: (String value) async {
+                                  await identify(value).then((value) {
                                     showDialog<void>(
                                       context: context,
                                       builder: (BuildContext context) {
@@ -134,7 +104,7 @@ class _IdentifyPageState extends State<IdentifyPage> {
                                           title: Text(
                                               '${value ? "Success" : "Failed"}!'),
                                           content: Text(
-                                              'Registration for ${_controller.text} was ${value ? "successful" : "unsuccessful"}'),
+                                              'Identification for ${_controller.text} was ${value ? "successful" : "unsuccessful"}'),
                                           actions: <Widget>[
                                             TextButton(
                                               onPressed: () {
@@ -148,17 +118,43 @@ class _IdentifyPageState extends State<IdentifyPage> {
                                     );
                                   });
                                 },
-                                child: const Text('Set'),
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
+                            ),
+                            const Padding(padding: EdgeInsets.all(10)),
+                            ElevatedButton(
+                              onPressed: () async {
+                                await identify(_controller.text).then((value) {
+                                  showDialog<void>(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text(
+                                            '${value ? "Success" : "Failed"}!'),
+                                        content: Text(
+                                            'Registration for ${_controller.text} was ${value ? "successful" : "unsuccessful"}'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                });
+                              },
+                              child: const Text('Set'),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  ], //children
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           )),
       bottomNavigationBar: const Footer(),
     );
