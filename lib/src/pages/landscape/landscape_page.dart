@@ -49,14 +49,8 @@ class _LandscapePageState extends State<LandscapePage> {
   bool _registered = false;
 
   bool isRegistered() {
-    if (io.File('/etc/landscape/client.conf').existsSync()) {
-      final config = io.File('/etc/landscape/client.conf').readAsLinesSync();
-      final ini = Config.fromStrings(config.toList());
-      if (ini.hasOption("client", "computer_title")) {
-        return ini.get("client", "computer_title").toString() == identifier;
-      } else {
-        return false;
-      }
+    if (io.File('/etc/provider.registered').existsSync()) {
+      return true;
     } else {
       return false;
     }
@@ -102,10 +96,17 @@ class _LandscapePageState extends State<LandscapePage> {
       identifier
     ]);
     final result = await runCmd(cmd, verbose: true, commandVerbose: true);
+
+    if (result.exitCode == 0) {
+      final ProcessCmd touchCmd =
+          ProcessCmd('sudo', ['touch', '/etc/provider.registered']);
+      await runCmd(touchCmd, verbose: true, commandVerbose: true);
+    }
     setState(() {
       _registered = isRegistered();
       _processing = false;
     });
+
     return result.exitCode == 0;
   }
 
