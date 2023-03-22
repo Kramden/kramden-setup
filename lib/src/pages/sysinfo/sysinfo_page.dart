@@ -86,7 +86,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
   }
 
   void getMemoryInfo() async {
-    final ProcessCmd cmd = ProcessCmd('free', ['-h', '--si']);
+    final ProcessCmd cmd = ProcessCmd('free', ['-g', '--si']);
     final result = await runCmd(cmd, verbose: false, commandVerbose: false);
     final output = result.stdout.toString();
     final memory = output.split('        ');
@@ -221,15 +221,15 @@ class _SysinfoPageState extends State<SysinfoPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                          style: int.parse(memoryTotal.replaceAll('G', '')) < 8
+                          style: int.parse(memoryTotal) < 8
                               ? const TextStyle(color: Colors.orange)
                               : const TextStyle(color: Colors.green),
-                          "Total RAM: $memoryTotal"),
+                          "Total RAM: $memoryTotal" "G"),
                       Text(
-                          style: double.parse(swapTotal.replaceAll('G', '')) < 4
+                          style: double.parse(swapTotal) < 4
                               ? const TextStyle(color: Colors.orange)
                               : const TextStyle(color: Colors.green),
-                          "Total swap: $swapTotal"),
+                          "Total swap: $swapTotal" "G"),
                     ],
                   ),
                   style: YaruTileStyle.normal,
