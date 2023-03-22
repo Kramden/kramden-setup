@@ -48,12 +48,15 @@ class _LandscapePageState extends State<LandscapePage> {
   bool _processing = false;
   bool _registered = false;
 
-  bool isRegistered() {
-    if (io.File('/etc/provider.registered').existsSync()) {
-      return true;
-    } else {
-      return false;
-    }
+  Future<bool> isRegistered() async {
+    final ProcessCmd cmd = ProcessCmd('sudo', [
+      'landscape-config',
+      '--is-registered',
+    ]);
+    final result = await runCmd(cmd, verbose: true, commandVerbose: true);
+    _registered = result.exitCode == 0;
+    setState(() {});
+    return _registered;
   }
 
   Future<bool> register(String identifier) async {
@@ -93,17 +96,13 @@ class _LandscapePageState extends State<LandscapePage> {
       '--account-name',
       'standalone',
       '--computer-title',
-      identifier
+      identifier,
+      '--script-users="nobody,landscape,root"',
     ]);
     final result = await runCmd(cmd, verbose: true, commandVerbose: true);
 
-    if (result.exitCode == 0) {
-      final ProcessCmd touchCmd =
-          ProcessCmd('sudo', ['touch', '/etc/provider.registered']);
-      await runCmd(touchCmd, verbose: true, commandVerbose: true);
-    }
     setState(() {
-      _registered = isRegistered();
+      _registered = result.exitCode == 0;
       _processing = false;
     });
 
@@ -113,7 +112,7 @@ class _LandscapePageState extends State<LandscapePage> {
   @override
   void initState() {
     super.initState();
-    _registered = isRegistered();
+    isRegistered();
   }
 
   @override
