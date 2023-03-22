@@ -97,7 +97,7 @@ class _LandscapePageState extends State<LandscapePage> {
       'standalone',
       '--computer-title',
       identifier,
-      '--script-users="nobody,landscape,root"',
+      '--script-users=ALL',
     ]);
     final result = await runCmd(cmd, verbose: true, commandVerbose: true);
 
