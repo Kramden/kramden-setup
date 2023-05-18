@@ -60,6 +60,10 @@ class _LandscapePageState extends State<LandscapePage> {
   }
 
   Future<bool> register(String identifier) async {
+    // If already registered, make this a NOOP
+    if (_registered) {
+      return true;
+    }
     String url = '';
     String pingUrl = '';
 
@@ -140,7 +144,7 @@ class _LandscapePageState extends State<LandscapePage> {
                                 const Padding(
                                     padding: EdgeInsets.all(kYaruPagePadding)),
                                 ElevatedButton(
-                                  onPressed: () async {
+                                  onPressed: _registered ? null : () async {
                                     await register(identifier).then((value) {
                                       showDialog<void>(
                                         context: context,
@@ -163,9 +167,7 @@ class _LandscapePageState extends State<LandscapePage> {
                                       );
                                     });
                                   },
-                                  child: _registered
-                                      ? const Text('Re-register')
-                                      : const Text('Register'),
+                                  child: const Text('Register'),
                                 ),
                               ],
                             ),
