@@ -102,6 +102,7 @@ class _LandscapePageState extends State<LandscapePage> {
       '--computer-title',
       identifier,
       '--script-users=ALL',
+      '--access-group=global',
     ]);
     final result = await runCmd(cmd, verbose: true, commandVerbose: true);
 
