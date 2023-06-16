@@ -1,5 +1,5 @@
+import 'dart:async';
 import 'dart:io' as io;
-import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
 import 'package:ini/ini.dart';
@@ -47,6 +47,7 @@ class _LandscapePageState extends State<LandscapePage> {
 
   bool _processing = false;
   bool _registered = false;
+  bool _accepted = false;
 
   Future<bool> isRegistered() async {
     final ProcessCmd cmd = ProcessCmd('sudo', [
@@ -57,6 +58,32 @@ class _LandscapePageState extends State<LandscapePage> {
     _registered = result.exitCode == 0;
     setState(() {});
     return _registered;
+  }
+
+  Future<bool> isAccepted() async {
+    if (io.File('/var/log/landscape/package-reporter.log').existsSync()) {
+      final fileBytes = await io.File('/var/log/landscape/package-reporter.log')
+          .readAsBytes();
+      _accepted = fileBytes.lengthInBytes > 0;
+    } else {
+      _accepted = false;
+    }
+
+    if (_accepted) _processing = false;
+    setState(() {});
+    return _accepted;
+  }
+
+  void monitorLandscape() {
+    // runs every 1 second
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!_accepted) {
+        isAccepted();
+      } else {
+        timer.cancel();
+        return;
+      }
+    });
   }
 
   Future<bool> register(String identifier) async {
@@ -108,8 +135,11 @@ class _LandscapePageState extends State<LandscapePage> {
 
     setState(() {
       _registered = result.exitCode == 0;
-      _processing = false;
     });
+
+    if (_registered) {
+      monitorLandscape();
+    }
 
     return result.exitCode == 0;
   }
@@ -118,6 +148,7 @@ class _LandscapePageState extends State<LandscapePage> {
   void initState() {
     super.initState();
     isRegistered();
+    isAccepted();
   }
 
   @override
@@ -137,7 +168,7 @@ class _LandscapePageState extends State<LandscapePage> {
                           children: [
                             Row(
                               children: [
-                                _registered
+                                _registered && _accepted
                                     ? Text(
                                         '$identifier is registered with Landscape')
                                     : Text(
@@ -145,29 +176,32 @@ class _LandscapePageState extends State<LandscapePage> {
                                 const Padding(
                                     padding: EdgeInsets.all(kYaruPagePadding)),
                                 ElevatedButton(
-                                  onPressed: _registered ? null : () async {
-                                    await register(identifier).then((value) {
-                                      showDialog<void>(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: Text(
-                                                '${value ? "Success" : "Failed"}!'),
-                                            content: Text(
-                                                'Registration for $identifier was ${value ? "successful" : "unsuccessful"}'),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: const Text('OK'),
-                                              ),
-                                            ],
-                                          );
+                                  onPressed: _registered
+                                      ? null
+                                      : () async {
+                                          await register(identifier)
+                                              .then((value) {
+                                            showDialog<void>(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: Text(
+                                                      '${value ? "Success" : "Failed"}!'),
+                                                  content: Text(
+                                                      'Registration for $identifier was ${value ? "successful" : "unsuccessful"}'),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: const Text('OK'),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          });
                                         },
-                                      );
-                                    });
-                                  },
                                   child: const Text('Register'),
                                 ),
                               ],
