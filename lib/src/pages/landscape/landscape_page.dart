@@ -215,8 +215,8 @@ class _LandscapePageState extends State<LandscapePage> {
       appBar: AppBar(
         title: Image(
             image: AssetImage(YaruTheme.of(context).themeMode == ThemeMode.dark
-                ? 'assets/images/landscape_light.png'
-                : 'assets/images/landscape_dark.png')),
+                ? 'assets/images/landscape_dark.png'
+                : 'assets/images/landscape_light.png')),
       ),
       bottomNavigationBar: const Footer(),
     );
