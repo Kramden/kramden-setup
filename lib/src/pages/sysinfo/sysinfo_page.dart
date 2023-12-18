@@ -166,7 +166,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
 
   void getInstallCheck() async {
     final ProcessCmd checkCmd =
-        ProcessCmd('/usr/bin/provider-install-test', []);
+        ProcessCmd('/usr/bin/provider-install-check', []);
     final checkResult =
         await runCmd(checkCmd, verbose: false, commandVerbose: false);
     checkStdout = checkResult.stdout.toString();
