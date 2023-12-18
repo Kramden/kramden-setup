@@ -9,7 +9,7 @@ import 'package:yaru_widgets/yaru_widgets.dart';
 class SysinfoPage extends StatefulWidget {
   //static var buildDetail;
 
-  SysinfoPage({super.key});
+  const SysinfoPage({super.key});
 
   static Widget buildIcon(BuildContext context) {
     return const Icon(YaruIcons.computer);
@@ -22,7 +22,7 @@ class SysinfoPage extends StatefulWidget {
   static Widget buildDetail(BuildContext context) {
     return ChangeNotifierProvider(
       create: (BuildContext context) {},
-      child: SysinfoPage(),
+      child: const SysinfoPage(),
     );
   }
 
@@ -45,6 +45,8 @@ class _SysinfoPageState extends State<SysinfoPage> {
   String cpuModel = "";
   String OSName = "";
   String identifier = "";
+  String checkStdout = "";
+  bool checkPassed = false;
 
   void getSystemInfo() async {
     final client = DBusClient.system();
@@ -162,6 +164,17 @@ class _SysinfoPageState extends State<SysinfoPage> {
     setState(() {});
   }
 
+  void getInstallCheck() async {
+    final ProcessCmd checkCmd =
+        ProcessCmd('/usr/bin/provider-install-test', []);
+    final checkResult =
+        await runCmd(checkCmd, verbose: false, commandVerbose: false);
+    checkStdout = checkResult.stdout.toString();
+    print(checkStdout);
+    checkPassed = checkResult.exitCode == 0;
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
@@ -169,6 +182,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
     getHardDriveInfo();
     getMemoryInfo();
     getSystemInfo();
+    getInstallCheck();
   }
 
   @override
@@ -241,6 +255,15 @@ class _SysinfoPageState extends State<SysinfoPage> {
                           ? const TextStyle(color: Colors.orange)
                           : const TextStyle(color: Colors.green),
                       "Capacity: ${batteryCapacity.toString()} %"),
+                  style: YaruTileStyle.normal,
+                ),
+                YaruTile(
+                  title: const Text("System Check"),
+                  subtitle: Text(
+                      style: checkPassed
+                          ? const TextStyle(color: Colors.green)
+                          : const TextStyle(color: Colors.red),
+                      checkStdout),
                   style: YaruTileStyle.normal,
                 ),
               ]),
