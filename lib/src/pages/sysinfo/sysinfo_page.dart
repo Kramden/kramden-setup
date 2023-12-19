@@ -32,6 +32,7 @@ class SysinfoPage extends StatefulWidget {
 
 class _SysinfoPageState extends State<SysinfoPage> {
   String batteryCapacity = "0";
+  bool batteryPresent = false;
   String hardDriveCapacity = "0";
   String systemRam = "0";
   String hardDriveUsed = "0";
@@ -160,6 +161,10 @@ class _SysinfoPageState extends State<SysinfoPage> {
         batteryCapacity = device.capacity.round().toString();
       }
     }
+    if (upower.devices.isNotEmpty) {
+      batteryPresent = true;
+    }
+
     upower.close();
     setState(() {});
   }
@@ -248,15 +253,16 @@ class _SysinfoPageState extends State<SysinfoPage> {
                   ),
                   style: YaruTileStyle.normal,
                 ),
-                YaruTile(
-                  title: const Text("Battery"),
-                  subtitle: Text(
-                      style: int.parse(batteryCapacity) < 75
-                          ? const TextStyle(color: Colors.orange)
-                          : const TextStyle(color: Colors.green),
-                      "Capacity: ${batteryCapacity.toString()} %"),
-                  style: YaruTileStyle.normal,
-                ),
+                if (batteryPresent)
+                  YaruTile(
+                    title: const Text("Battery"),
+                    subtitle: Text(
+                        style: int.parse(batteryCapacity) < 75
+                            ? const TextStyle(color: Colors.orange)
+                            : const TextStyle(color: Colors.green),
+                        "Capacity: ${batteryCapacity.toString()} %"),
+                    style: YaruTileStyle.normal,
+                  ),
                 YaruTile(
                   title: const Text("System Check"),
                   subtitle: Text(
