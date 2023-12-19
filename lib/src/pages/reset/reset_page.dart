@@ -51,7 +51,7 @@ class _ResetPageState extends State<ResetPage> {
                   child: Column(
                     children: [
                       const Text(
-                        "Reset the system and prepare for a new user",
+                        "Complete final setup and power off",
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 20),
