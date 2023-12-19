@@ -192,7 +192,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
                   style: YaruTileStyle.normal,
                 ),
                 YaruTile(
-                  title: const Text("System Memory"),
+                  title: const Text("Memory"),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
