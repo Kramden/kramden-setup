@@ -159,10 +159,8 @@ class _SysinfoPageState extends State<SysinfoPage> {
         //print("Capacity: ${device.capacity.round()}");
         //print("Percentage: ${device.percentage}");
         batteryCapacity = device.capacity.round().toString();
+        batteryPresent = true;
       }
-    }
-    if (upower.devices.isNotEmpty) {
-      batteryPresent = true;
     }
 
     upower.close();
