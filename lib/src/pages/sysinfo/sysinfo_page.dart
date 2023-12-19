@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:upower/upower.dart';
 import 'package:yaru_icons/yaru_icons.dart';
 import 'package:yaru_widgets/yaru_widgets.dart';
+import 'package:udisks/udisks.dart';
 
 class SysinfoPage extends StatefulWidget {
   //static var buildDetail;
@@ -33,11 +34,9 @@ class SysinfoPage extends StatefulWidget {
 class _SysinfoPageState extends State<SysinfoPage> {
   String batteryCapacity = "0";
   bool batteryPresent = false;
-  String hardDriveCapacity = "0";
+  int hardDriveCapacity = 0;
+  String hardDriveModel = "";
   String systemRam = "0";
-  String hardDriveUsed = "0";
-  String hardDriveAvailable = "0";
-  String hardDriveUsage = "0";
   String memoryTotal = "0";
   String swapTotal = "0";
   String vendor = "";
@@ -99,55 +98,19 @@ class _SysinfoPageState extends State<SysinfoPage> {
   }
 
   void getHardDriveInfo() async {
-    final ProcessCmd capacityCmd =
-        ProcessCmd('df', ['-h', '--output=size', '/']);
-    final capacityResult =
-        await runCmd(capacityCmd, verbose: false, commandVerbose: false);
-    hardDriveCapacity = capacityResult.stdout
-        .toString()
-        .trimLeft()
-        .replaceAll('  ', ' ')
-        .split(' ')[1]
-        .toString()
-        .trimLeft()
-        .trimRight();
-    //print(hardDriveCapacity);
-    final ProcessCmd usedCmd = ProcessCmd('df', ['-h', '--output=used', '/']);
-    final usedResult =
-        await runCmd(usedCmd, verbose: false, commandVerbose: false);
-    hardDriveUsed = usedResult.stdout
-        .toString()
-        .trimLeft()
-        .replaceAll('  ', ' ')
-        .split(' ')[1]
-        .toString()
-        .trimLeft()
-        .trimRight();
-    //print(hardDriveUsed);
-    final ProcessCmd availCmd = ProcessCmd('df', ['-h', '--output=avail', '/']);
-    final availResult =
-        await runCmd(availCmd, verbose: false, commandVerbose: false);
-    hardDriveAvailable = availResult.stdout
-        .toString()
-        .trimLeft()
-        .replaceAll('  ', ' ')
-        .split(' ')[1]
-        .toString()
-        .trimLeft()
-        .trimRight();
-    //print(hardDriveAvailable);
-    final ProcessCmd usageCmd = ProcessCmd('df', ['-h', '--output=pcent', '/']);
-    final usageResult =
-        await runCmd(usageCmd, verbose: false, commandVerbose: false);
-    hardDriveUsage = usageResult.stdout
-        .toString()
-        .trimLeft()
-        .replaceAll('  ', ' ')
-        .split(' ')[1]
-        .toString()
-        .trimLeft()
-        .trimRight();
-    //print(hardDriveUsage);
+    final client = UDisksClient();
+    await client.connect();
+
+    print('Running UDisks ${client.version}');
+    print('Supported filesystems: ${client.supportedFilesystems.join(' ')}');
+    for (var drive in client.drives) {
+      if (!drive.removable) {
+        hardDriveCapacity = drive.size / 1024 / 1024 ~/ 1024;
+        print(hardDriveCapacity);
+        hardDriveModel = drive.model;
+      }
+    }
+    await client.close();
     setState(() {});
   }
 
@@ -219,15 +182,11 @@ class _SysinfoPageState extends State<SysinfoPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                          style:
-                              int.parse(hardDriveCapacity.replaceAll('G', '')) <
-                                      120
-                                  ? const TextStyle(color: Colors.orange)
-                                  : const TextStyle(color: Colors.green),
-                          "Capacity: $hardDriveCapacity"),
-                      Text("Used: $hardDriveUsed"),
-                      Text("Available: $hardDriveAvailable"),
-                      Text("Usage: $hardDriveUsage"),
+                          style: hardDriveCapacity < 120
+                              ? const TextStyle(color: Colors.orange)
+                              : const TextStyle(color: Colors.green),
+                          "Capacity: $hardDriveCapacity GB"),
+                      Text("Model: $hardDriveModel"),
                     ],
                   ),
                   style: YaruTileStyle.normal,
