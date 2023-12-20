@@ -5,6 +5,41 @@ import 'package:yaru_widgets/yaru_widgets.dart';
 
 import 'pages.dart';
 
+final completedSteps = CompletedSteps();
+
+class CompletedSteps extends ValueNotifier<List<String>> {
+  CompletedSteps() : super([]);
+  List<String> _completedSteps = [];
+  final List<String> _requiredSteps = [
+    'identity',
+    'verifySysinfo',
+    'testWifi',
+    'testBrowserVideoAudio',
+    'testKeyboard',
+    'testTouchpad',
+    'landscape'
+  ];
+
+  List<String>? get completedSteps => _completedSteps;
+  void addCompletedStep(String value) {
+    if (_completedSteps.contains(value)) return;
+    _completedSteps.add(value);
+    notifyListeners();
+  }
+
+  List<String> checkRequired() {
+    final List<String> missingSteps = [];
+    for (var i in _requiredSteps) {
+      if (!_completedSteps.contains(i)) {
+        missingSteps.add(i);
+      }
+    }
+
+    missingSteps.forEach(print);
+    return missingSteps;
+  }
+}
+
 class ProviderSetupApp extends StatelessWidget {
   const ProviderSetupApp({super.key});
 

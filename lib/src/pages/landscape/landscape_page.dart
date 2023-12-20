@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:ini/ini.dart';
 import 'package:process_run/cmd_run.dart';
 import 'package:provider/provider.dart';
+import 'package:provider_setup/app.dart';
 import 'package:yaru/yaru.dart';
 import 'package:yaru_icons/yaru_icons.dart';
 import 'package:yaru_widgets/yaru_widgets.dart';
@@ -138,6 +139,7 @@ class _LandscapePageState extends State<LandscapePage> {
     });
 
     if (_registered) {
+      completedSteps.addCompletedStep('landscape');
       monitorLandscape();
     }
 

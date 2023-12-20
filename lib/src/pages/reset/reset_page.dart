@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:process_run/cmd_run.dart';
 import 'package:provider/provider.dart';
+import 'package:provider_setup/app.dart';
 import 'package:yaru_icons/yaru_icons.dart';
 import 'package:yaru_widgets/yaru_widgets.dart';
-
 import '../../../widgets.dart';
 
 class ResetPage extends StatefulWidget {
@@ -32,9 +32,15 @@ class ResetPage extends StatefulWidget {
 }
 
 class _ResetPageState extends State<ResetPage> {
+  List<String> missingSteps = completedSteps.checkRequired();
+
   @override
   void initState() {
     super.initState();
+    completedSteps.addListener(() {
+      print(completedSteps.completedSteps);
+      missingSteps = completedSteps.checkRequired();
+    });
   }
 
   @override
@@ -50,8 +56,10 @@ class _ResetPageState extends State<ResetPage> {
                   width: 400,
                   child: Column(
                     children: [
-                      const Text(
-                        "Complete final setup and power off",
+                      Text(
+                        missingSteps.isEmpty
+                            ? "Complete final setup and power off"
+                            : "Please complete all required steps",
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 20),

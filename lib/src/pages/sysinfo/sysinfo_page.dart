@@ -2,6 +2,7 @@ import 'package:dbus/dbus.dart';
 import 'package:flutter/material.dart';
 import 'package:process_run/cmd_run.dart';
 import 'package:provider/provider.dart';
+import 'package:provider_setup/app.dart';
 import 'package:udisks/udisks.dart';
 import 'package:upower/upower.dart';
 import 'package:yaru_icons/yaru_icons.dart';
@@ -136,8 +137,6 @@ class _SysinfoPageState extends State<SysinfoPage> {
         ProcessCmd('/usr/bin/provider-install-check', []);
     final checkResult =
         await runCmd(checkCmd, verbose: false, commandVerbose: false);
-    checkStdout = checkResult.stdout.toString();
-    print(checkStdout);
     checkPassed = checkResult.exitCode == 0;
     setState(() {});
   }
@@ -150,6 +149,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
     getMemoryInfo();
     getSystemInfo();
     getInstallCheck();
+    completedSteps.addCompletedStep('verifySysinfo');
   }
 
   @override

@@ -3,6 +3,7 @@ import 'dart:io' as io;
 import 'package:flutter/material.dart';
 import 'package:process_run/cmd_run.dart';
 import 'package:provider/provider.dart';
+import 'package:provider_setup/app.dart';
 import 'package:yaru_icons/yaru_icons.dart';
 import 'package:yaru_widgets/yaru_widgets.dart';
 
@@ -59,6 +60,9 @@ class _IdentifyPageState extends State<IdentifyPage> {
     final ProcessCmd cmd = ProcessCmd(
         'sudo', ['hostnamectl', 'set-hostname', value.toUpperCase()]);
     final result = await runCmd(cmd, verbose: true, commandVerbose: true);
+    if (result.exitCode == 0) {
+      completedSteps.addCompletedStep('identity');
+    }
     setState(() {
       identifier = _identifier();
     });

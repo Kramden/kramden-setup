@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:process_run/cmd_run.dart';
 import 'package:provider/provider.dart';
+import 'package:provider_setup/app.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:yaru_icons/yaru_icons.dart';
 import 'package:yaru_widgets/yaru_widgets.dart';
@@ -31,6 +32,7 @@ class ManualTestPage extends StatefulWidget {
 
 class _ManualTestPageState extends State<ManualTestPage> {
   final List<bool?> _checkboxValues = [false, false, false, false];
+
   void _launchURL() async {
     final Uri url = Uri.parse('https://vimeo.com/116979416');
     if (await launchUrl(url)) {
@@ -73,8 +75,11 @@ class _ManualTestPageState extends State<ManualTestPage> {
                           leading: Row(children: [
                             YaruCheckButton(
                                 value: _checkboxValues[0],
-                                onChanged: (v) =>
-                                    setState(() => _checkboxValues[0] = v),
+                                onChanged: (v) => {
+                                      completedSteps
+                                          .addCompletedStep('testWifi'),
+                                      setState(() => _checkboxValues[0] = v)
+                                    },
                                 title: const SizedBox(height: 10, width: 10)),
                             const Text(
                                 "WiFi connectivity (Can it connect to the internet wirelessly?)"),
@@ -84,8 +89,11 @@ class _ManualTestPageState extends State<ManualTestPage> {
                         leading: Row(children: [
                           YaruCheckButton(
                               value: _checkboxValues[1],
-                              onChanged: (v) =>
-                                  setState(() => _checkboxValues[1] = v),
+                              onChanged: (v) => {
+                                    completedSteps.addCompletedStep(
+                                        'testBrowserVideoAudio'),
+                                    setState(() => _checkboxValues[1] = v)
+                                  },
                               title: const SizedBox(height: 10, width: 10)),
                           InkWell(
                             onTap: _launchURL,
@@ -99,8 +107,11 @@ class _ManualTestPageState extends State<ManualTestPage> {
                           leading: Row(children: [
                             YaruCheckButton(
                                 value: _checkboxValues[2],
-                                onChanged: (v) =>
-                                    setState(() => _checkboxValues[2] = v),
+                                onChanged: (v) => {
+                                      completedSteps
+                                          .addCompletedStep('testKeyboard'),
+                                      setState(() => _checkboxValues[2] = v)
+                                    },
                                 title: const SizedBox(height: 10, width: 10)),
                             InkWell(
                                 onTap: _launchText,
@@ -112,8 +123,11 @@ class _ManualTestPageState extends State<ManualTestPage> {
                           leading: Row(children: [
                             YaruCheckButton(
                                 value: _checkboxValues[3],
-                                onChanged: (v) =>
-                                    setState(() => _checkboxValues[3] = v),
+                                onChanged: (v) => {
+                                      completedSteps
+                                          .addCompletedStep('testTouchpad'),
+                                      setState(() => _checkboxValues[3] = v)
+                                    },
                                 title: const SizedBox(height: 10, width: 10)),
                             const Text(
                                 "Touchpad (Does the touchpad feel responsive)"),
