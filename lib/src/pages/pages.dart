@@ -4,6 +4,7 @@ import 'identify/identify_page.dart';
 import 'landscape/landscape_page.dart';
 import 'reset/reset_page.dart';
 import 'sysinfo/sysinfo_page.dart';
+import 'manualtest/manualtest_page.dart';
 
 class PageBuilder {
   const PageBuilder({
@@ -27,6 +28,11 @@ const pages = [
     iconBuilder: SysinfoPage.buildIcon,
     titleBuilder: SysinfoPage.buildTitle,
     pageBuilder: SysinfoPage.buildDetail,
+  ),
+  PageBuilder(
+    iconBuilder: ManualTestPage.buildIcon,
+    titleBuilder: ManualTestPage.buildTitle,
+    pageBuilder: ManualTestPage.buildDetail,
   ),
   PageBuilder(
     iconBuilder: LandscapePage.buildIcon,
