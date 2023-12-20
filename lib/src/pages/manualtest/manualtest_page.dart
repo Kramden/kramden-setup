@@ -11,7 +11,7 @@ class ManualTestPage extends StatefulWidget {
   const ManualTestPage({super.key});
 
   static Widget buildIcon(BuildContext context) {
-    return const Icon(YaruIcons.computer);
+    return const Icon(YaruIcons.checkmark);
   }
 
   static Widget buildTitle(BuildContext context) {
@@ -41,8 +41,8 @@ class _ManualTestPageState extends State<ManualTestPage> {
   }
 
   void _launchText() async {
-    final ProcessCmd touchCmd = ProcessCmd('touch', ['touch /tmp/test.txt']);
-    await runCmd(touchCmd, verbose: false, commandVerbose: false);
+    final ProcessCmd touchCmd = ProcessCmd('touch', ['/tmp/test.txt']);
+    await runCmd(touchCmd, verbose: true, commandVerbose: true);
     final ProcessCmd cmd = ProcessCmd('xdg-open', ['file:///tmp/test.txt']);
     await runCmd(cmd, verbose: false, commandVerbose: false);
   }
@@ -90,7 +90,6 @@ class _ManualTestPageState extends State<ManualTestPage> {
                           InkWell(
                             onTap: _launchURL,
                             child: const Text(
-                                style: TextStyle(color: Colors.blue),
                                 "Browser with video and audio playback - Click here"),
                           )
                         ]),
@@ -106,7 +105,6 @@ class _ManualTestPageState extends State<ManualTestPage> {
                             InkWell(
                                 onTap: _launchText,
                                 child: const Text(
-                                    style: TextStyle(color: Colors.blue),
                                     "Keyboard (Do all the keys work and report correctly?) - Click here")),
                           ])),
                       YaruTile(
