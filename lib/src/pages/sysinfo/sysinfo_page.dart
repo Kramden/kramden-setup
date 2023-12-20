@@ -2,10 +2,10 @@ import 'package:dbus/dbus.dart';
 import 'package:flutter/material.dart';
 import 'package:process_run/cmd_run.dart';
 import 'package:provider/provider.dart';
+import 'package:udisks/udisks.dart';
 import 'package:upower/upower.dart';
 import 'package:yaru_icons/yaru_icons.dart';
 import 'package:yaru_widgets/yaru_widgets.dart';
-import 'package:udisks/udisks.dart';
 
 class SysinfoPage extends StatefulWidget {
   //static var buildDetail;
@@ -123,6 +123,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
         //print("Percentage: ${device.percentage}");
         batteryCapacity = device.capacity.round().toString();
         batteryPresent = true;
+        print(device.technology);
       }
     }
 
@@ -200,12 +201,12 @@ class _SysinfoPageState extends State<SysinfoPage> {
                           style: int.parse(memoryTotal) < 8
                               ? const TextStyle(color: Colors.orange)
                               : const TextStyle(color: Colors.green),
-                          "Total RAM: $memoryTotal" "G"),
+                          "RAM: $memoryTotal" "G"),
                       Text(
                           style: double.parse(swapTotal) < 4
                               ? const TextStyle(color: Colors.orange)
                               : const TextStyle(color: Colors.green),
-                          "Total swap: $swapTotal" "G"),
+                          "Swap: $swapTotal" "G"),
                     ],
                   ),
                   style: YaruTileStyle.normal,
