@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:process_run/cmd_run.dart';
 import 'package:provider/provider.dart';
 import 'package:provider_setup/app.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:yaru_icons/yaru_icons.dart';
 import 'package:yaru_widgets/yaru_widgets.dart';
 
@@ -34,12 +33,9 @@ class _ManualTestPageState extends State<ManualTestPage> {
   final List<bool?> _checkboxValues = [false, false, false, false];
 
   void _launchURL() async {
-    final Uri url = Uri.parse('https://vimeo.com/116979416');
-    if (await launchUrl(url)) {
-      await launchUrl(url);
-    } else {
-      throw 'Could not launch $url';
-    }
+    final ProcessCmd cmd =
+        ProcessCmd('xdg-open', ['https://vimeo.com/116979416']);
+    await runCmd(cmd, verbose: false, commandVerbose: false);
   }
 
   void _launchText() async {
