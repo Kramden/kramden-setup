@@ -61,7 +61,7 @@ class _IdentifyPageState extends State<IdentifyPage> {
         'sudo', ['hostnamectl', 'set-hostname', value.toUpperCase()]);
     final result = await runCmd(cmd, verbose: true, commandVerbose: true);
     if (result.exitCode == 0) {
-      completedSteps.addCompletedStep('identity');
+      completedSteps.addCompletedStep('Identity');
     }
     setState(() {
       identifier = _identifier();

@@ -76,8 +76,7 @@ class _ManualTestPageState extends State<ManualTestPage> {
                             YaruCheckButton(
                                 value: _checkboxValues[0],
                                 onChanged: (v) => {
-                                      completedSteps
-                                          .addCompletedStep('testWifi'),
+                                      completedSteps.addCompletedStep('Wifi'),
                                       setState(() => _checkboxValues[0] = v)
                                     },
                                 title: const SizedBox(height: 10, width: 10)),
@@ -91,7 +90,7 @@ class _ManualTestPageState extends State<ManualTestPage> {
                               value: _checkboxValues[1],
                               onChanged: (v) => {
                                     completedSteps.addCompletedStep(
-                                        'testBrowserVideoAudio'),
+                                        'Graphics, Video, and Audio'),
                                     setState(() => _checkboxValues[1] = v)
                                   },
                               title: const SizedBox(height: 10, width: 10)),
@@ -109,7 +108,7 @@ class _ManualTestPageState extends State<ManualTestPage> {
                                 value: _checkboxValues[2],
                                 onChanged: (v) => {
                                       completedSteps
-                                          .addCompletedStep('testKeyboard'),
+                                          .addCompletedStep('Keyboard'),
                                       setState(() => _checkboxValues[2] = v)
                                     },
                                 title: const SizedBox(height: 10, width: 10)),
@@ -125,7 +124,7 @@ class _ManualTestPageState extends State<ManualTestPage> {
                                 value: _checkboxValues[3],
                                 onChanged: (v) => {
                                       completedSteps
-                                          .addCompletedStep('testTouchpad'),
+                                          .addCompletedStep('Touchpad'),
                                       setState(() => _checkboxValues[3] = v)
                                     },
                                 title: const SizedBox(height: 10, width: 10)),

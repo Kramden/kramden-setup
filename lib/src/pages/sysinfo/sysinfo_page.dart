@@ -149,7 +149,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
     getMemoryInfo();
     getSystemInfo();
     getInstallCheck();
-    completedSteps.addCompletedStep('verifySysinfo');
+    completedSteps.addCompletedStep('System Info');
   }
 
   @override

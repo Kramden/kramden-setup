@@ -139,7 +139,7 @@ class _LandscapePageState extends State<LandscapePage> {
     });
 
     if (_registered) {
-      completedSteps.addCompletedStep('landscape');
+      completedSteps.addCompletedStep('Landscape');
       monitorLandscape();
     }
 

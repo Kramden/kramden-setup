@@ -11,13 +11,13 @@ class CompletedSteps extends ValueNotifier<List<String>> {
   CompletedSteps() : super([]);
   List<String> _completedSteps = [];
   final List<String> _requiredSteps = [
-    'identity',
-    'verifySysinfo',
-    'testWifi',
-    'testBrowserVideoAudio',
-    'testKeyboard',
-    'testTouchpad',
-    'landscape'
+    'Identity',
+    'System Info',
+    'Wifi',
+    'Graphics, Video, and Audio',
+    'Keyboard',
+    'Touchpad',
+    'Landscape'
   ];
 
   List<String>? get completedSteps => _completedSteps;

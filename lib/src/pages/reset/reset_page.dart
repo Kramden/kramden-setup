@@ -12,11 +12,11 @@ class ResetPage extends StatefulWidget {
   const ResetPage({super.key});
 
   static Widget buildIcon(BuildContext context) {
-    return const Icon(YaruIcons.reboot);
+    return const Icon(YaruIcons.save_as_filled);
   }
 
   static Widget buildTitle(BuildContext context) {
-    return const Text("Reset");
+    return const Text("Finish");
   }
 
   static Widget buildDetail(BuildContext context) {
@@ -38,7 +38,6 @@ class _ResetPageState extends State<ResetPage> {
   void initState() {
     super.initState();
     completedSteps.addListener(() {
-      print(completedSteps.completedSteps);
       missingSteps = completedSteps.checkRequired();
     });
   }
@@ -62,8 +61,12 @@ class _ResetPageState extends State<ResetPage> {
                             : "Please complete all required steps",
                         textAlign: TextAlign.center,
                       ),
+                      Text(
+                        missingSteps.isEmpty ? "" : missingSteps.toString(),
+                        textAlign: TextAlign.center,
+                      ),
                       const SizedBox(height: 20),
-                      YaruIconButton(
+                      ElevatedButton(
                         onPressed: () async {
                           await runReset().then((value) {
                             showDialog<void>(
@@ -90,7 +93,7 @@ class _ResetPageState extends State<ResetPage> {
                             );
                           });
                         },
-                        icon: const Icon(YaruIcons.reboot),
+                        child: const Text("Complete"),
                       ),
                     ],
                   ),
