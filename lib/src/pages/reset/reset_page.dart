@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:process_run/cmd_run.dart';
 import 'package:provider/provider.dart';
 import 'package:provider_setup/app.dart';
+import 'package:yaru/yaru.dart';
 import 'package:yaru_icons/yaru_icons.dart';
 import 'package:yaru_widgets/yaru_widgets.dart';
 import '../../../widgets.dart';
@@ -67,32 +68,35 @@ class _ResetPageState extends State<ResetPage> {
                       ),
                       const SizedBox(height: 20),
                       ElevatedButton(
-                        onPressed: () async {
-                          await runReset().then((value) {
-                            showDialog<void>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title:
-                                      Text('${value ? "Success" : "Failed"}!'),
-                                  content: Text(
-                                      'Reset was ${value ? "successful, reboot now" : "unsuccessful"}'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () {
-                                        if (value) {
-                                          runReboot();
-                                        }
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text(value ? "Reboot" : "OK"),
-                                    ),
-                                  ],
-                                );
+                        onPressed: missingSteps.isNotEmpty
+                            ? null
+                            : () async {
+                                await runReset().then((value) {
+                                  showDialog<void>(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text(
+                                            '${value ? "Success" : "Failed"}!'),
+                                        content: Text(
+                                            'Reset was ${value ? "successful, reboot now" : "unsuccessful"}'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              if (value) {
+                                                runReboot();
+                                              }
+                                              Navigator.pop(context);
+                                            },
+                                            child:
+                                                Text(value ? "Reboot" : "OK"),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                });
                               },
-                            );
-                          });
-                        },
                         child: const Text("Complete"),
                       ),
                     ],
