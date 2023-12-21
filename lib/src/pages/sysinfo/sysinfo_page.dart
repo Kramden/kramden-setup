@@ -102,12 +102,9 @@ class _SysinfoPageState extends State<SysinfoPage> {
     final client = UDisksClient();
     await client.connect();
 
-    print('Running UDisks ${client.version}');
-    print('Supported filesystems: ${client.supportedFilesystems.join(' ')}');
     for (var drive in client.drives) {
       if (!drive.removable) {
         hardDriveCapacity = drive.size / 1024 / 1024 ~/ 1024;
-        print(hardDriveCapacity);
         hardDriveModel = drive.model;
       }
     }
@@ -124,7 +121,6 @@ class _SysinfoPageState extends State<SysinfoPage> {
         //print("Percentage: ${device.percentage}");
         batteryCapacity = device.capacity.round().toString();
         batteryPresent = true;
-        print(device.technology);
       }
     }
 
