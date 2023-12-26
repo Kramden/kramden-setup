@@ -133,6 +133,8 @@ class _SysinfoPageState extends State<SysinfoPage> {
         ProcessCmd('/usr/bin/provider-install-check', []);
     final checkResult =
         await runCmd(checkCmd, verbose: false, commandVerbose: false);
+    checkStdout = checkResult.stdout.toString();
+    print(checkStdout);
     checkPassed = checkResult.exitCode == 0;
     setState(() {});
   }
