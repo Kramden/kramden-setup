@@ -30,12 +30,24 @@ class ManualTestPage extends StatefulWidget {
 }
 
 class _ManualTestPageState extends State<ManualTestPage> {
-  final List<bool?> _checkboxValues = [false, false, false, false];
+  final List<bool?> _checkboxValues = [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ];
 
   void _launchURL() async {
     final ProcessCmd cmd =
         ProcessCmd('xdg-open', ['https://vimeo.com/116979416']);
     await runCmd(cmd, verbose: false, commandVerbose: false);
+  }
+
+  void _launchCheese() async {
+    final ProcessCmd cmd = ProcessCmd('/usr/bin/cheese', ['']);
+    await runCmd(cmd, verbose: true, commandVerbose: true);
   }
 
   void _launchText() async {
@@ -62,7 +74,7 @@ class _ManualTestPageState extends State<ManualTestPage> {
             YaruSection(
               child: Column(children: [
                 YaruTile(
-                  title: const Text("Tests"),
+                  title: const Text("Required Tests"),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -72,12 +84,12 @@ class _ManualTestPageState extends State<ManualTestPage> {
                             YaruCheckButton(
                                 value: _checkboxValues[0],
                                 onChanged: (v) => {
-                                      completedSteps.addCompletedStep('Wifi'),
+                                      completedSteps.addCompletedStep('USB'),
                                       setState(() => _checkboxValues[0] = v)
                                     },
                                 title: const SizedBox(height: 10, width: 10)),
                             const Text(
-                                "WiFi connectivity (Can it connect to the internet wirelessly?)"),
+                                "USB Ports (Plug the mouse into each USB port and verify that it works)"),
                           ])),
                       YaruTile(
                         enabled: true,
@@ -96,16 +108,58 @@ class _ManualTestPageState extends State<ManualTestPage> {
                                 "Browser with video and audio playback - Click here"),
                           )
                         ]),
-                      ),
+                      )
+                    ],
+                  ),
+                ),
+              ]),
+            ),
+            YaruSection(
+              child: Column(children: [
+                YaruTile(
+                  title:
+                      const Text("Optional Tests - Laptops and/or All-In-Ones"),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                       YaruTile(
                           enabled: true,
                           leading: Row(children: [
                             YaruCheckButton(
                                 value: _checkboxValues[2],
                                 onChanged: (v) => {
+                                      completedSteps.addCompletedStep('Wifi'),
+                                      setState(() => _checkboxValues[2] = v)
+                                    },
+                                title: const SizedBox(height: 10, width: 10)),
+                            const Text(
+                                "WiFi connectivity (Can it connect to the internet wirelessly?)"),
+                          ])),
+                      YaruTile(
+                        enabled: true,
+                        leading: Row(children: [
+                          YaruCheckButton(
+                              value: _checkboxValues[3],
+                              onChanged: (v) => {
+                                    completedSteps.addCompletedStep('Webcam'),
+                                    setState(() => _checkboxValues[3] = v)
+                                  },
+                              title: const SizedBox(height: 10, width: 10)),
+                          InkWell(
+                            onTap: _launchCheese,
+                            child: const Text("Webcam - Click here"),
+                          )
+                        ]),
+                      ),
+                      YaruTile(
+                          enabled: true,
+                          leading: Row(children: [
+                            YaruCheckButton(
+                                value: _checkboxValues[4],
+                                onChanged: (v) => {
                                       completedSteps
                                           .addCompletedStep('Keyboard'),
-                                      setState(() => _checkboxValues[2] = v)
+                                      setState(() => _checkboxValues[4] = v)
                                     },
                                 title: const SizedBox(height: 10, width: 10)),
                             InkWell(
@@ -117,11 +171,11 @@ class _ManualTestPageState extends State<ManualTestPage> {
                           enabled: true,
                           leading: Row(children: [
                             YaruCheckButton(
-                                value: _checkboxValues[3],
+                                value: _checkboxValues[5],
                                 onChanged: (v) => {
                                       completedSteps
                                           .addCompletedStep('Touchpad'),
-                                      setState(() => _checkboxValues[3] = v)
+                                      setState(() => _checkboxValues[5] = v)
                                     },
                                 title: const SizedBox(height: 10, width: 10)),
                             const Text(

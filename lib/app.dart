@@ -13,10 +13,8 @@ class CompletedSteps extends ValueNotifier<List<String>> {
   final List<String> _requiredSteps = [
     'Identity',
     'System Info',
-    'Wifi',
     'Graphics, Video, and Audio',
-    'Keyboard',
-    'Touchpad',
+    'USB',
     'Landscape'
   ];
 
