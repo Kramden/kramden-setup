@@ -1,3 +1,4 @@
+import 'dart:io' as io;
 import 'package:dbus/dbus.dart';
 import 'package:flutter/material.dart';
 import 'package:process_run/cmd_run.dart';
@@ -48,6 +49,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
   String identifier = "";
   String checkStdout = "";
   bool checkPassed = false;
+  String installerVersion = "";
 
   void getSystemInfo() async {
     final client = DBusClient.system();
@@ -85,6 +87,18 @@ class _SysinfoPageState extends State<SysinfoPage> {
     cpuModel =
         result.stdout.toString().split(': ')[1].split('model name')[0].trim();
     //print(cpuModel);
+    setState(() {});
+  }
+
+  void getInstallerVersion() async {
+    if (io.File('/var/log/installer/kramden-iso').existsSync()) {
+      installerVersion = io.File('/var/log/installer/kramden-iso')
+          .readAsStringSync()
+          .replaceAll('-amd64.iso', '');
+      print(installerVersion);
+    } else {
+      print("File does not exist");
+    }
     setState(() {});
   }
 
@@ -147,6 +161,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
     getMemoryInfo();
     getSystemInfo();
     getInstallCheck();
+    getInstallerVersion();
     completedSteps.addCompletedStep('System Info');
   }
 
@@ -171,6 +186,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
                       Text("Model: $hardwareModel"),
                       Text("CPU: $cpuModel"),
                       Text("OS: $OSName"),
+                      Text("Installer Version: $installerVersion"),
                     ],
                   ),
                   style: YaruTileStyle.normal,
