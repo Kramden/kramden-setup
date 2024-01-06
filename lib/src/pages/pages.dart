@@ -2,9 +2,9 @@ import 'package:flutter/widgets.dart';
 
 import 'identify/identify_page.dart';
 import 'landscape/landscape_page.dart';
+import 'manualtest/manualtest_page.dart';
 import 'reset/reset_page.dart';
 import 'sysinfo/sysinfo_page.dart';
-import 'manualtest/manualtest_page.dart';
 
 class PageBuilder {
   const PageBuilder({

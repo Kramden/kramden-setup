@@ -9,7 +9,7 @@ final completedSteps = CompletedSteps();
 
 class CompletedSteps extends ValueNotifier<List<String>> {
   CompletedSteps() : super([]);
-  List<String> _completedSteps = [];
+  final List<String> _completedSteps = [];
   final List<String> _requiredSteps = [
     'Identity',
     'System Info',
