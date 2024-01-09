@@ -58,7 +58,9 @@ class _LandscapePageState extends State<LandscapePage> {
     final result = await runCmd(cmd, verbose: true, commandVerbose: true);
     _registered = result.exitCode == 0;
 
-    completedSteps.addCompletedStep('Landscape');
+    if (_registered) {
+      completedSteps.addCompletedStep('Landscape');
+    }
 
     setState(() {});
     return _registered;
