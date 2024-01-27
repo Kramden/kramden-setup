@@ -203,6 +203,11 @@ class _SysinfoPageState extends State<SysinfoPage> {
                       Text("CPU: $cpuModel"),
                       Text("OS: $OSName"),
                       Text("Installer Version: $installerVersion"),
+                      Text(
+                          style: isRegisteredWithLandscape
+                              ? const TextStyle(color: Colors.green)
+                              : const TextStyle(color: Colors.orange),
+                          "Registered with Landscape: $isRegisteredWithLandscape")
                     ],
                   ),
                   style: YaruTileStyle.normal,
