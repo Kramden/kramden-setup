@@ -50,6 +50,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
   String checkStdout = "";
   bool checkPassed = false;
   String installerVersion = "";
+  bool isRegisteredWithLandscape = false;
 
   void getSystemInfo() async {
     final client = DBusClient.system();
@@ -70,11 +71,12 @@ class _SysinfoPageState extends State<SysinfoPage> {
       }
       //print('$name: ${value.toNative()}');
     });
-    if (hostname.startsWith("K") ||
-        hostname.startsWith("D") ||
-        hostname.startsWith("L")) {
-      identifier = hostname;
+    if (hostname.toLowerCase().startsWith("k") ||
+        hostname.toLowerCase().startsWith("d") ||
+        hostname.toLowerCase().startsWith("l")) {
+      completedSteps.addCompletedStep('Identity');
     }
+    identifier = hostname;
     //print("==================================");
     //print(hostname);
     //print(vendor);
@@ -153,6 +155,19 @@ class _SysinfoPageState extends State<SysinfoPage> {
     setState(() {});
   }
 
+  void checkIfRegisteredWithLandscape() async {
+    final ProcessCmd cmd = ProcessCmd('sudo', [
+      'landscape-config',
+      '--is-registered',
+    ]);
+    final result = await runCmd(cmd, verbose: true, commandVerbose: true);
+    isRegisteredWithLandscape = result.exitCode == 0;
+
+    if (isRegisteredWithLandscape) {
+      completedSteps.addCompletedStep('Landscape');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -162,6 +177,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
     getSystemInfo();
     getInstallCheck();
     getInstallerVersion();
+    checkIfRegisteredWithLandscape();
     completedSteps.addCompletedStep('System Info');
   }
 

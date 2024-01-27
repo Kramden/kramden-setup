@@ -1,9 +1,13 @@
+import 'dart:io' as io;
+
 import 'package:flutter/material.dart';
 import 'package:yaru/yaru.dart';
 import 'package:yaru_icons/yaru_icons.dart';
 import 'package:yaru_widgets/yaru_widgets.dart';
 
 import 'pages.dart';
+
+final stage = io.Platform.environment['USER'].toString().toLowerCase();
 
 final completedSteps = CompletedSteps();
 
@@ -66,6 +70,27 @@ class ProviderSetupPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (stage == "osload") {
+      // If OS Load stage don't show manual tests page and drop those required tests
+      pages.removeAt(3); // Manual Test page
+      completedSteps._requiredSteps.removeAt(3);
+      completedSteps._requiredSteps.removeAt(2);
+    } else if (stage == "finaltest") {
+      // If Final Test, don't show landscape
+      pages.removeAt(1); // Landscape page
+      pages.removeAt(0); // Identity page
+      completedSteps._requiredSteps.removeAt(4);
+      completedSteps._requiredSteps.removeAt(0);
+    } else {
+      // If not OS Load or Final Test, don't require any steps
+      completedSteps._requiredSteps.clear();
+      // Only Display System Info
+      pages.removeAt(pages.length - 1); // Reset page is last
+      pages.removeAt(3); // Manual Test
+      pages.removeAt(1); // Landscape page
+      pages.removeAt(0); // Identity page
+    }
+
     return YaruNavigationPage(
       length: pages.length,
       itemBuilder: (context, index, selected) => YaruNavigationRailItem(

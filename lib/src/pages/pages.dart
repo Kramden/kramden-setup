@@ -18,28 +18,28 @@ class PageBuilder {
   final WidgetBuilder pageBuilder;
 }
 
-const pages = [
-  PageBuilder(
+List<PageBuilder> pages = [
+  const PageBuilder(
     iconBuilder: IdentifyPage.buildIcon,
     titleBuilder: IdentifyPage.buildTitle,
     pageBuilder: IdentifyPage.buildDetail,
   ),
-  PageBuilder(
-    iconBuilder: SysinfoPage.buildIcon,
-    titleBuilder: SysinfoPage.buildTitle,
-    pageBuilder: SysinfoPage.buildDetail,
-  ),
-  PageBuilder(
-    iconBuilder: ManualTestPage.buildIcon,
-    titleBuilder: ManualTestPage.buildTitle,
-    pageBuilder: ManualTestPage.buildDetail,
-  ),
-  PageBuilder(
+  const PageBuilder(
     iconBuilder: LandscapePage.buildIcon,
     titleBuilder: LandscapePage.buildTitle,
     pageBuilder: LandscapePage.buildDetail,
   ),
-  PageBuilder(
+  const PageBuilder(
+    iconBuilder: SysinfoPage.buildIcon,
+    titleBuilder: SysinfoPage.buildTitle,
+    pageBuilder: SysinfoPage.buildDetail,
+  ),
+  const PageBuilder(
+    iconBuilder: ManualTestPage.buildIcon,
+    titleBuilder: ManualTestPage.buildTitle,
+    pageBuilder: ManualTestPage.buildDetail,
+  ),
+  const PageBuilder(
     iconBuilder: ResetPage.buildIcon,
     titleBuilder: ResetPage.buildTitle,
     pageBuilder: ResetPage.buildDetail,
