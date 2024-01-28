@@ -78,17 +78,17 @@ class _ResetPageState extends State<ResetPage> {
                                         title: Text(
                                             '${value ? "Success" : "Failed"}!'),
                                         content: Text(
-                                            'Reset was ${value ? "successful, reboot now" : "unsuccessful"}'),
+                                            'Reset was ${value ? "successful, Power off" : "unsuccessful"}'),
                                         actions: <Widget>[
                                           TextButton(
                                             onPressed: () {
                                               if (value) {
-                                                runReboot();
+                                                runPowerOff();
                                               }
                                               Navigator.pop(context);
                                             },
                                             child:
-                                                Text(value ? "Reboot" : "OK"),
+                                                Text(value ? "Power Off" : "OK"),
                                           ),
                                         ],
                                       );
@@ -110,19 +110,17 @@ class _ResetPageState extends State<ResetPage> {
 
   Future<bool> runReset() async {
     final ProcessCmd cmd = ProcessCmd(
-      'sudo',
-      [
-        '/usr/share/provider/provider-reset',
-      ],
+      '/usr/share/provider/provider-reset',
+      [],
     );
     final result = await runCmd(cmd, verbose: true);
     return result.exitCode == 0;
   }
 
-  Future<bool> runReboot() async {
+  Future<bool> runPowerOff() async {
     final ProcessCmd cmd = ProcessCmd(
       'sudo',
-      ['reboot'],
+      ['poweroff'],
     );
     final result = await runCmd(cmd, verbose: true);
     return result.exitCode == 0;
