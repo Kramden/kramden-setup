@@ -145,7 +145,7 @@ class _LandscapePageState extends State<LandscapePage> {
 
     if (_registered) {
       completedSteps.addCompletedStep('Landscape');
-      monitorLandscape();
+      //monitorLandscape();
     }
 
     return result.exitCode == 0;
