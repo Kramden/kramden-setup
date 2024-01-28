@@ -162,6 +162,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
     ]);
     final result = await runCmd(cmd, verbose: true, commandVerbose: true);
     isRegisteredWithLandscape = result.exitCode == 0;
+    setState(() {});
 
     if (isRegisteredWithLandscape) {
       completedSteps.addCompletedStep('Landscape');
