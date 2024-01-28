@@ -78,19 +78,19 @@ class _ResetPageState extends State<ResetPage> {
                                         title: Text(
                                             '${value ? "Success" : "Failed"}!'),
                                         content: Text(
-                                            'Reset was ${value ? "successful, Power off" : "unsuccessful"}'),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () {
-                                              if (value) {
-                                                runPowerOff();
-                                              }
-                                              Navigator.pop(context);
-                                            },
-                                            child:
-                                                Text(value ? "Power Off" : "OK"),
-                                          ),
-                                        ],
+                                            'Reset was ${value ? "successful, Shutdown now" : "unsuccessful"}'),
+                                        //actions: <Widget>[
+                                        //  TextButton(
+                                        //    onPressed: () {
+                                        //      if (value) {
+                                        //        runPowerOff();
+                                        //      }
+                                        //      Navigator.pop(context);
+                                        //    },
+                                        //    child:
+                                        //       Text(value ? "Power Off" : "OK"),
+                                        //  ),
+                                        //],
                                       );
                                     },
                                   );
