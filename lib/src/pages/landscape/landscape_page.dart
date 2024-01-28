@@ -148,6 +148,10 @@ class _LandscapePageState extends State<LandscapePage> {
       //monitorLandscape();
     }
 
+    setState(() {
+      _processing = false;
+    });
+
     return result.exitCode == 0;
   }
 
