@@ -250,18 +250,18 @@ class _SysinfoPageState extends State<SysinfoPage> {
                 ),
                 if (batteryPresent)
                   YaruTile(
-                      title: const Text("Battery"),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: batteries.entries
-                            .map(
-                              (e) => Text(
-                                  style: int.parse(e.value) < 70
-                                      ? const TextStyle(color: Colors.orange)
-                                      : const TextStyle(color: Colors.green),
-                                  "Capacity: ${e.value.toString()} %"),
-                            )
-                            .toList(),
+                    title: const Text("Battery"),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: batteries.entries
+                          .map(
+                            (e) => Text(
+                                style: int.parse(e.value) < 70
+                                    ? const TextStyle(color: Colors.orange)
+                                    : const TextStyle(color: Colors.green),
+                                "Capacity: ${e.value.toString()} %"),
+                          )
+                          .toList(),
                       )),
                 YaruTile(
                   title: const Text("System Check"),
