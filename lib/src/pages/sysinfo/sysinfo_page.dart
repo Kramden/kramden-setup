@@ -34,7 +34,6 @@ class SysinfoPage extends StatefulWidget {
 }
 
 class _SysinfoPageState extends State<SysinfoPage> {
-  String batteryCapacity = "0";
   bool batteryPresent = false;
   Map<String, String> batteries = Map<String, String>();
   int hardDriveCapacity = 0;
@@ -138,8 +137,6 @@ class _SysinfoPageState extends State<SysinfoPage> {
         //print("Capacity: ${device.capacity.round()}");
         //print("Percentage: ${device.percentage}");
         batteries[device.model.toString()] = device.capacity.round().toString();
-        //batteryCapacity = device.capacity.round().toString();
-        batteryCapacity = batteries[device.model] as String;
         batteryPresent = true;
       }
     }
