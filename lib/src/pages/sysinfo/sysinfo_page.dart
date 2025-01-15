@@ -36,6 +36,7 @@ class SysinfoPage extends StatefulWidget {
 class _SysinfoPageState extends State<SysinfoPage> {
   String batteryCapacity = "0";
   bool batteryPresent = false;
+  Map<String, String> batteries = Map<String, String>();
   int hardDriveCapacity = 0;
   String hardDriveModel = "";
   String systemRam = "0";
@@ -131,11 +132,14 @@ class _SysinfoPageState extends State<SysinfoPage> {
   void getBatteryInfo() async {
     final upower = UPowerClient();
     await upower.connect();
+
     for (var device in upower.devices) {
       if (device.type == UPowerDeviceType.battery) {
         //print("Capacity: ${device.capacity.round()}");
         //print("Percentage: ${device.percentage}");
-        batteryCapacity = device.capacity.round().toString();
+        batteries[device.model.toString()] = device.capacity.round().toString();
+        //batteryCapacity = device.capacity.round().toString();
+        batteryCapacity = batteries[device.model] as String;
         batteryPresent = true;
       }
     }
@@ -219,7 +223,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                          style: hardDriveCapacity < 120
+                          style: hardDriveCapacity < 115
                               ? const TextStyle(color: Colors.orange)
                               : const TextStyle(color: Colors.green),
                           "Capacity: $hardDriveCapacity GB"),
@@ -249,14 +253,19 @@ class _SysinfoPageState extends State<SysinfoPage> {
                 ),
                 if (batteryPresent)
                   YaruTile(
-                    title: const Text("Battery"),
-                    subtitle: Text(
-                        style: int.parse(batteryCapacity) < 75
-                            ? const TextStyle(color: Colors.orange)
-                            : const TextStyle(color: Colors.green),
-                        "Capacity: ${batteryCapacity.toString()} %"),
-                    style: YaruTileStyle.normal,
-                  ),
+                      title: const Text("Battery"),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: batteries.entries
+                            .map(
+                              (e) => Text(
+                                  style: int.parse(e.value) < 70
+                                      ? const TextStyle(color: Colors.orange)
+                                      : const TextStyle(color: Colors.green),
+                                  "Capacity: ${e.value.toString()} %"),
+                            )
+                            .toList(),
+                      )),
                 YaruTile(
                   title: const Text("System Check"),
                   subtitle: Text(
