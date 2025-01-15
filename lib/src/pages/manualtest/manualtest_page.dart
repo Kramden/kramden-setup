@@ -36,6 +36,7 @@ class _ManualTestPageState extends State<ManualTestPage> {
     false,
     false,
     false,
+    false,
     false
   ];
 
@@ -46,7 +47,12 @@ class _ManualTestPageState extends State<ManualTestPage> {
   }
 
   void _launchCheese() async {
-    final ProcessCmd cmd = ProcessCmd('/usr/bin/cheese', ['']);
+    final ProcessCmd cmd = ProcessCmd('/usr/bin/cheese', []);
+    await runCmd(cmd, verbose: true, commandVerbose: true);
+  }
+
+  void _launchScreenTest() async {
+    final ProcessCmd cmd = ProcessCmd('/snap/bin/screen-test', []);
     await runCmd(cmd, verbose: true, commandVerbose: true);
   }
 
@@ -180,6 +186,21 @@ class _ManualTestPageState extends State<ManualTestPage> {
                                 title: const SizedBox(height: 10, width: 10)),
                             const Text(
                                 "Touchpad (Does the touchpad feel responsive)"),
+                          ])),
+                      YaruTile(
+                          enabled: true,
+                          leading: Row(children: [
+                            YaruCheckButton(
+                                value: _checkboxValues[6],
+                                onChanged: (v) => {
+                                      completedSteps
+                                          .addCompletedStep('ScreenTest'),
+                                      setState(() => _checkboxValues[6] = v)
+                                    },
+                                title: const SizedBox(height: 10, width: 10)),
+                            InkWell(
+                                onTap: _launchScreenTest,
+                                child: const Text("Screen Test - Click here")),
                           ])),
                     ],
                   ),
