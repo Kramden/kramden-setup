@@ -36,8 +36,7 @@ class SysinfoPage extends StatefulWidget {
 class _SysinfoPageState extends State<SysinfoPage> {
   bool batteryPresent = false;
   Map<String, String> batteries = Map<String, String>();
-  int hardDriveCapacity = 0;
-  String hardDriveModel = "";
+  Map<String, int> drives = Map<String, int>();
   String systemRam = "0";
   String memoryTotal = "0";
   String swapTotal = "0";
@@ -120,8 +119,7 @@ class _SysinfoPageState extends State<SysinfoPage> {
 
     for (var drive in client.drives) {
       if (!drive.removable) {
-        hardDriveCapacity = drive.size / 1024 / 1024 ~/ 1024;
-        hardDriveModel = drive.model;
+        drives[drive.model] = drive.size / 1024 / 1024 ~/ 1024;
       }
     }
     await client.close();
@@ -218,16 +216,20 @@ class _SysinfoPageState extends State<SysinfoPage> {
                   title: const Text("Hard Drive"),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                          style: hardDriveCapacity < 115
-                              ? const TextStyle(color: Colors.orange)
-                              : const TextStyle(color: Colors.green),
-                          "Capacity: $hardDriveCapacity GB"),
-                      Text("Model: $hardDriveModel"),
-                    ],
-                  ),
-                  style: YaruTileStyle.normal,
+                    children: drives.entries
+                        .map(
+                          (e) => Row(
+                            children: [
+                              Text("Model: ${e.key.toString()}"),
+                              Text("     "),
+                              Text(
+                                style: e.value < 115
+                                  ? const TextStyle(color: Colors.orange)
+                                  : const TextStyle(color: Colors.green),
+                                "Capacity: ${e.value.toString()} GB")
+                            ])
+                        )
+                        .toList()),
                 ),
                 YaruTile(
                   title: const Text("Memory"),
